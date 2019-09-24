@@ -1,0 +1,32 @@
+package uavcam::tipo_de_dados
+public
+	
+with base_types;
+with data_model;
+
+--------------
+  -- PWM_Rate --
+  --------------
+
+  data PWM_Rate extends base_types::Unsigned_8
+  end PWM_Rate;
+
+  --------------
+
+  data Six_Axis
+  properties
+    data_model::Data_Representation => Array;
+  end Six_Axis;
+
+  data implementation Six_Axis.impl
+  subcomponents
+    Acc_X  : data base_types::Integer_16;
+    Acc_Y  : data base_types::Integer_16;
+    Acc_Z  : data base_types::Integer_16;
+    Gyro_X : data base_types::Integer_16;
+    Gyro_Y : data base_types::Integer_16;
+    Gyro_Z : data base_types::Integer_16;
+
+  end Six_Axis.impl;
+
+end uavcam::tipo_de_dados;
