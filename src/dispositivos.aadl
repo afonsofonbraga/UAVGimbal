@@ -1,0 +1,102 @@
+package uavcam::dispositivos
+public
+	with uavcam::tipo_de_dados;
+
+	with Electricity_Properties;
+
+---------------------
+--  Unidade Móvel Inercial - MPU6050
+---------------------
+	device IMU_generic
+		features
+			DOF6: out data port uavcam::tipo_de_dados::Six_Axis.impl;
+		properties
+			--Initialize_Entrypoint => classifier (devices::gps_lea4h::Initialize);
+			Electricity_Properties::Idle_Current => 0.065mA;
+			Electricity_Properties::Run_Current => 39.0mA; --  at 3.0 V 
+			Electricity_Properties::Peak_Current => 100.0mA; -- to measure
+			Electricity_Properties::Core_Voltage => 3.3V; -- 2.7 V - 3.3 power supply
+			Electricity_Properties::Acquisition_Time => 3500ms; -- reacquisition, hot start < 3.5s, cold start 34s 
+			Electricity_Properties::Peak_Time => 1ms;
+			Electricity_Properties::VIH_min => 2.0V; --  5V tolerant inputs
+			Electricity_Properties::VIL_max => 1.0V;
+			Electricity_Properties::VOH_min => 3.2V;
+			Electricity_Properties::VOL_max => 0.4V;
+					-- level shifter added to conenct to STM32F405
+			Electricity_Properties::Level_Shifter_VIH_min => 1.2V;
+			Electricity_Properties::Level_Shifter_VIL_max => 0.5V;
+			Electricity_Properties::Level_Shifter_VOH_min => 1.7V;
+			Electricity_Properties::Level_Shifter_VOL_max => 0.1V;
+			Electricity_Properties::Device_Type => Slave;
+		annex EMV2 {**
+			use types ErrorLibrary;
+			use behavior ErrorLibrary::FailStop;
+			
+			error propagations
+				DOF6: out propagation {ItemOmission, OutOfRange};
+			flows
+				ef1: error source DOF6 {ItemOmission, OutOfRange};
+			end propagations;
+			
+			properties
+				EMV2::Hazards => ([crossreference => "N/A";
+						failure => "Device:ItemOmission";
+						phases => ("in flight");
+						description => "IMU dont send data";
+						comment => "The sensor does not send any data, might be an error if all sensores does not sent data";
+					]) applies to DOF6.ItemOmission;
+				EMV2::Hazards => ([crossreference => "N/A";
+						failure => "Device:OutOfRange";
+						phases => ("in flight");
+						description => "IMU starts to send an erroneous value range";
+						comment => "The sensor does not send any data in value range, might be an error if all sensors does not send a consistent value";
+					]) applies to DOF6.OutOfRange;
+		**};
+	end IMU_generic;
+
+---------------------
+--  Unidade Móvel Inercial - MPU6050
+---------------------
+	device MPU6050 extends IMU_generic
+		features
+			DOF: out data port uavcam::tipo_de_dados::Six_Axis.impl;
+		flows
+			f2: flow source DOF {latency => 100us .. 300us;};
+		properties
+			Dispatch_Protocol => Periodic;
+			Period => 10ms;
+	end MPU6050;
+
+-------------------	
+--  Servo Motor  --
+-------------------
+	device Servo_Motor
+		features
+			PWM_Serv: in data port uavcam::tipo_de_dados::PWM_Rate;
+		flows
+			f0: flow sink PWM_Serv {latency => 200us .. 500us;};
+		properties
+			Dispatch_Protocol => Periodic;
+			Period => 20ms; -- depende da tecnologia do ESC
+		annex EMV2 {**
+			use types ErrorLibrary;
+			use behavior ErrorLibrary::FailStop;
+			
+			error propagations
+				PWM_Serv: in propagation {ItemOmission, OutOfRange};
+			flows
+				ef0: error sink PWM_Serv {ItemOmission, OutOfRange};
+			end propagations;
+			
+			component error behavior
+			events
+				Reset: recover event;
+			transitions
+				t0: Operational -[PWM_Serv {ItemOmission}]-> FailStop;
+				t1: Operational -[PWM_Serv {OutOfRange}]-> FailStop;
+				t2: FailStop -[Reset]-> Operational;
+			end component;
+		**};
+	end Servo_Motor;	
+	
+end uavcam::dispositivos;
