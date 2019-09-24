@@ -1,3 +1,3 @@
 # UAVGimbal
 
-# Unmanned Aerial Vehicle
+# Unmanned Aerial Vehicle equipped with a stabilized camera.
