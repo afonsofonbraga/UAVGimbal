@@ -18,17 +18,21 @@ public
 
 	system implementation UAVGimbal.with_devices
 		subcomponents
-			this_servo_roll: device uavcam::dispositivos::Servo_Motor_Roll;
-			this_servo_pitch: device uavcam::dispositivos::Servo_Motor_Pitch;
-			this_servo_yaw: device uavcam::dispositivos::Servo_Motor_Yaw;
+			this_servo_roll: device uavcam::dispositivos::Servo_Motor.impl;
+			this_servo_pitch: device uavcam::dispositivos::Servo_Motor.impl;
+			this_servo_yaw: device uavcam::dispositivos::Servo_Motor.impl;
 			this_imu: device uavcam::dispositivos::MPU6050;
 			this_camera: device uavcam::dispositivos::camera;
 			this_radio: device uavcam::dispositivos::radio;
 			this_board: device uavcam::dispositivos::board;
 			this_UAV_controller: device uavcam::dispositivos::UAV_controller;
 			this_gimbal_control: process gimbal_control;
-		--connections
+		connections
 			--Serv_Roll_conn: port this_servo_roll. -> this_gimbal_control.
+			c001: port this_gimbal_control.PWM_Serv_Roll_out -> this_servo_roll.PWM_Serv;
+			c002: port this_gimbal_control.PWM_Serv_Pitch_out -> this_servo_pitch.PWM_Serv;
+			c003: port this_gimbal_control.PWM_Serv_Yaw_out -> this_servo_yaw.PWM_Serv;
+			c004: port this_imu.DOF-> this_gimbal_control.Attitude_in;
 	end UAVGimbal.with_devices;
 
 -------------
@@ -44,6 +48,8 @@ public
 
 	process implementation gimbal_control.with_threads
 	end gimbal_control.with_threads;
+
+
 
 	processor armx
 		features

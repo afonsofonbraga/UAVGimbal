@@ -7,11 +7,14 @@ this_servo_roll: device uavcam::dispositivos::Servo_Motor_Roll;
 this_servo_pitch: device uavcam::dispositivos::Servo_Motor_Pitch;
 this_servo_yaw: device uavcam::dispositivos::Servo_Motor_Yaw;
 
+-- Todos os servomotores já estão com suas ports atualizadas. Criei um device apenas para os 3.
+
 connection uart
 
 -- Afonso
 this_imu: device uavcam::dispositivos::MPU6050;
 connection: i2c
+Conectado no processo também
 
 -- Rafael
 this_camera: device uavcam::dispositivos::camera;
