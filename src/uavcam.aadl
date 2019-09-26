@@ -1,0 +1,30 @@
+package uavcam
+public
+	
+	with uavcam::dispositivos;
+	--with uavcam::tipo_de_dados;
+	
+	
+	system UAVGimbal
+	end UAVGimbal;
+	
+	system implementation UAVGimbal.with_devices
+		subcomponents
+			this_roll_sensor: device uavcam::dispositivos::Servo_Motor_Roll;
+			this_pitch_sensor: device uavcam::dispositivos::Servo_Motor_Pitch;
+			this_yaw_sensor: device uavcam::dispositivos::Servo_Motor_Yaw;
+			this_imu: device uavcam::dispositivos::MPU6050;
+			this_camera: device uavcam::dispositivos::camera;
+			this_platform: device uavcam::dispositivos::platform;
+			this_UAV_controller: device uavcam::dispositivos::UAV_controller;		
+	end UAVGimbal.with_devices;
+	
+	process gimbal_control
+		
+	end gimbal_control;
+	
+	process implementation gimbal_control.with_threads
+		
+	end gimbal_control.with_threads;
+	
+end uavcam;
