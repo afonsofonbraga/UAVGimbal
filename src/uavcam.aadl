@@ -4,10 +4,8 @@ public
 	with uavcam::dispositivos;
 
 	with uavcam::tipo_de_dados;
+	with uavcam::threads_file;
 
-	with buses::USB;
-
-	--with buses::usb;
 	with buses::misc;
 	with buses::USB;
 ------------
@@ -25,14 +23,23 @@ public
 			this_camera: device uavcam::dispositivos::camera;
 			this_radio: device uavcam::dispositivos::radio;
 			this_board: device uavcam::dispositivos::board;
-			this_UAV_controller: device uavcam::dispositivos::UAV_controller;
+			this_UAV: device uavcam::dispositivos::UAV;
 			this_gimbal_control: process gimbal_control;
+<<<<<<< HEAD
 		connections
 			--Serv_Roll_conn: port this_servo_roll. -> this_gimbal_control.
 			c001: port this_gimbal_control.PWM_Serv_Roll_out -> this_servo_roll.PWM_Serv;
 			c002: port this_gimbal_control.PWM_Serv_Pitch_out -> this_servo_pitch.PWM_Serv;
 			c003: port this_gimbal_control.PWM_Serv_Yaw_out -> this_servo_yaw.PWM_Serv;
 			c004: port this_imu.DOF-> this_gimbal_control.Attitude_in;
+=======
+			this_processor: processor MainProcessor.impl;
+			this_bus: bus Shared_Mem_Bus;
+		connections
+			--Serv_Roll_conn: port this_servo_roll. -> this_gimbal_control.
+			radio_conn: port this_radio.radio_position -> this_gimbal_control.Target_Position_in;
+			bus_processor: bus access this_bus -> this_processor.memory_bus;
+>>>>>>> e72e02a8313fd97093559cf751e8b28d96c572c3
 	end UAVGimbal.with_devices;
 
 -------------
@@ -43,19 +50,48 @@ public
 			PWM_Serv_Roll_out: out data port uavcam::tipo_de_dados::PWM_Rate;
 			PWM_Serv_Pitch_out: out data port uavcam::tipo_de_dados::PWM_Rate;
 			PWM_Serv_Yaw_out: out data port uavcam::tipo_de_dados::PWM_Rate;
-			Attitude_in: in data port uavcam::tipo_de_dados::Six_Axis.impl;
+			Attitude_in: in data port uavcam::tipo_de_dados::Six_Axis.impl;			
+			Target_Position_in: in data port uavcam::tipo_de_dados::Target_Position.impl;
 	end gimbal_control;
 
 	process implementation gimbal_control.with_threads
+		subcomponents
+			this_thread_radio: thread uavcam::threads_file::receive_radio;
+		connections
+			target_position_conn: port Target_Position_in -> this_thread_radio.Target_Position_in;
 	end gimbal_control.with_threads;
 
+<<<<<<< HEAD
 
 
 	processor armx
+=======
+---------------
+-- Processor --
+---------------	
+	processor MainProcessor
+>>>>>>> e72e02a8313fd97093559cf751e8b28d96c572c3
 		features
+			memory_bus: requires bus access Shared_Mem_Bus;
 			Serial_Wire_Master: requires bus access buses::USB::USB.impl;
 			Supply_in : requires bus access buses::Misc::V5_bus.impl; 
-	end armx;
+	end MainProcessor;
+
+-------------------		
+-- Shared Memory --
+-------------------	
+	processor implementation MainProcessor.impl
+		subcomponents
+			this_ram: memory Ram;
+	end MainProcessor.impl;
 	
+	memory Ram		
+	end Ram;
+	
+	bus Shared_Mem_Bus		
+	end Shared_Mem_Bus;
+	
+	bus implementation Shared_Mem_Bus.impl		
+	end Shared_Mem_Bus.impl;
 	
 end uavcam;
