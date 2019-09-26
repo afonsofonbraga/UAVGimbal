@@ -3,6 +3,10 @@ public
 	with uavcam::tipo_de_dados;
 
 	with Electricity_Properties;
+	
+	with types;
+  	with buses::misc;
+  	with buses::USB;
 
 ---------------------
 --  Unidade Móvel Inercial - MPU6050
@@ -67,41 +71,129 @@ public
 			Period => 10ms;
 	end MPU6050;
 
+	device implementation MPU6050.impl
+		
+	end MPU6050.impl;
 
 -------------------	
 --     Camera    --
 -------------------
 
 	device camera
-		
+		features
+			Serial_Wire: requires bus access buses::USB::USB.impl;
+    		Supply: requires bus access buses::misc::V5_Bus.impl;
+    		proc_evt: out event port;
 	end camera;
 
---------------
--- Platform --
---------------
+	device implementation CAMERA.impl
+  		properties
+		    Initialize_Entrypoint => classifier (Initialize);
+		    Electricity_Properties::Idle_Current => 1.0 mA;  -- no data
+		    Electricity_Properties::Run_Current =>  50.0 mA; --  no data
+		    Electricity_Properties::Peak_Current => 100.0 mA; -- to measure
+		    Electricity_Properties::Core_Voltage => 5.0 V; -- 4.75 .. 5.25 V  standard USB range
+		    Electricity_Properties::Acquisition_Time => 1 sec; -- no data
+		    Electricity_Properties::Peak_Time => 1 ms;
+		    Electricity_Properties::VIH_min => 2.0 V;
+		    Electricity_Properties::VIL_max => 1.0 V;
+		    Electricity_Properties::VOH_min => 3.2 V;
+		    Electricity_Properties::VOL_max => 0.4 V;
+		    Electricity_Properties::Device_Type => Slave;
+  	end CAMERA.impl;
 
-	device platform
+	  abstract CAMERA_Driver
+	  end CAMERA_Driver;
+	
+	  abstract implementation CAMERA_Driver.impl
+	  end CAMERA_Driver.impl;
+
+  -----------------
+  -- SUBPROGRAMS --
+  -----------------
+
+  subprogram Initialize
+  properties
+    Source_Name => "initialize";
+    Source_Text => ("camera_usb.c");
+    Source_Language => (C);
+  end Initialize;
+
+  subprogram Read_Acquisition
+  features
+    CAMERA_meas: out parameter types::CAMERA_meas_dat;
+  properties
+    Source_Name => "read_acquisition";
+    Source_Text => ("camera_usb.c");
+    Source_Language => (C);
+  end Read_Acquisition;
+
+  subprogram Start_Acquisition
+  properties
+    Source_Name => "start_acquisition";
+    Source_Text => ("camera_usb.c");
+    Source_Language => (C);
+  end Start_Acquisition;
+
+
+
+-----------
+-- Board --
+-----------
+
+	device board
 		
-	end platform;
+	end board;
+	
+	device implementation board.impl
+		
+	end board.impl;
 
--------------------	
+--------------------	
 -- UAV controller --
--------------------
+--------------------
 
 	device UAV_controller
+		features
+			Supply : requires bus access buses::Misc::V5_bus.impl;
 		
 	end UAV_controller;
 	
+	device implementation UAV_controller.impl
+		
+	end UAV_controller.impl;
+	
+----------------------------	
+-- Radio (Remote control) --
+----------------------------
+	device radio
+  		features
+			ch1: out event port;
+			ch2: out event port;
+			ch3: out event port;
+			ch4: in out event port;
+			ch5: out event port;
+			ch6: in out event port;
+  	--features
+    --emission_data 	: in data port pathfinder_software::emission_data;
+    --reception_data 	: out data port pathfinder_software::reception_data;
+    --req_access_vme 	: requires bus access VME;
 
+	end radio;	
+
+	device implementation radio.impl
+		
+	end radio.impl;
+	
 -------------------	
 --  Servo Motors --
 -------------------
 
-		device Servo_Motor_Roll
+	device Servo_Motor_Roll
 		features
-			PWM_Serv: in data port uavcam::tipo_de_dados::PWM_Rate;
+			PWM_Serv_Roll: in data port uavcam::tipo_de_dados::PWM_Rate;
 		flows
-			f0: flow sink PWM_Serv {latency => 200us .. 500us;};
+			f0: flow sink PWM_Serv_Roll {latency => 200us .. 500us;};
 		properties
 			Dispatch_Protocol => Periodic;
 			Period => 20ms; -- depende da tecnologia do ESC
@@ -110,27 +202,32 @@ public
 			use behavior ErrorLibrary::FailStop;
 			
 			error propagations
-				PWM_Serv: in propagation {ItemOmission, OutOfRange};
+				PWM_Serv_Roll: in propagation {ItemOmission, OutOfRange};
 			flows
-				ef0: error sink PWM_Serv {ItemOmission, OutOfRange};
+				ef0: error sink PWM_Serv_Roll {ItemOmission, OutOfRange};
 			end propagations;
 			
 			component error behavior
 			events
 				Reset: recover event;
 			transitions
-				t0: Operational -[PWM_Serv {ItemOmission}]-> FailStop;
-				t1: Operational -[PWM_Serv {OutOfRange}]-> FailStop;
+				t0: Operational -[PWM_Serv_Roll {ItemOmission}]-> FailStop;
+				t1: Operational -[PWM_Serv_Roll {OutOfRange}]-> FailStop;
 				t2: FailStop -[Reset]-> Operational;
 			end component;
 		**};
 	end Servo_Motor_Roll;
 	
+	
+	device implementation Servo_Motor_Roll.impl
+		
+	end Servo_Motor_Roll.impl;
+	
 	device Servo_Motor_Pitch
 		features
-			PWM_Serv: in data port uavcam::tipo_de_dados::PWM_Rate;
+			PWM_Serv_Pitch: in data port uavcam::tipo_de_dados::PWM_Rate;
 		flows
-			f0: flow sink PWM_Serv {latency => 200us .. 500us;};
+			f0: flow sink PWM_Serv_Pitch {latency => 200us .. 500us;};
 		properties
 			Dispatch_Protocol => Periodic;
 			Period => 20ms; -- depende da tecnologia do ESC
@@ -139,27 +236,32 @@ public
 			use behavior ErrorLibrary::FailStop;
 			
 			error propagations
-				PWM_Serv: in propagation {ItemOmission, OutOfRange};
+				PWM_Serv_Pitch: in propagation {ItemOmission, OutOfRange};
 			flows
-				ef0: error sink PWM_Serv {ItemOmission, OutOfRange};
+				ef0: error sink PWM_Serv_Pitch {ItemOmission, OutOfRange};
 			end propagations;
 			
 			component error behavior
 			events
 				Reset: recover event;
 			transitions
-				t0: Operational -[PWM_Serv {ItemOmission}]-> FailStop;
-				t1: Operational -[PWM_Serv {OutOfRange}]-> FailStop;
+				t0: Operational -[PWM_Serv_Pitch {ItemOmission}]-> FailStop;
+				t1: Operational -[PWM_Serv_Pitch {OutOfRange}]-> FailStop;
 				t2: FailStop -[Reset]-> Operational;
 			end component;
 		**};
 	end Servo_Motor_Pitch;	
 	
+	device implementation Servo_Motor_Pitch.impl
+		
+	end Servo_Motor_Pitch.impl;
+	
+	
 	device Servo_Motor_Yaw 
 		features
-			PWM_Serv: in data port uavcam::tipo_de_dados::PWM_Rate;
+			PWM_Serv_Yaw: in data port uavcam::tipo_de_dados::PWM_Rate;
 		flows
-			f0: flow sink PWM_Serv {latency => 200us .. 500us;};
+			f0: flow sink PWM_Serv_Yaw {latency => 200us .. 500us;};
 		properties
 			Dispatch_Protocol => Periodic;
 			Period => 20ms; -- depende da tecnologia do ESC
@@ -168,20 +270,25 @@ public
 			use behavior ErrorLibrary::FailStop;
 			
 			error propagations
-				PWM_Serv: in propagation {ItemOmission, OutOfRange};
+				PWM_Serv_Yaw: in propagation {ItemOmission, OutOfRange};
 			flows
-				ef0: error sink PWM_Serv {ItemOmission, OutOfRange};
+				ef0: error sink PWM_Serv_Yaw {ItemOmission, OutOfRange};
 			end propagations;
 			
 			component error behavior
 			events
 				Reset: recover event;
 			transitions
-				t0: Operational -[PWM_Serv {ItemOmission}]-> FailStop;
-				t1: Operational -[PWM_Serv {OutOfRange}]-> FailStop;
+				t0: Operational -[PWM_Serv_Yaw {ItemOmission}]-> FailStop;
+				t1: Operational -[PWM_Serv_Yaw {OutOfRange}]-> FailStop;
 				t2: FailStop -[Reset]-> Operational;
 			end component;
 		**};
 	end Servo_Motor_Yaw;	
+	
+	
+	device implementation Servo_Motor_Yaw.impl
+		
+	end Servo_Motor_Yaw.impl;
 	
 end uavcam::dispositivos;
