@@ -1,0 +1,47 @@
+1- connect devices
+2- processor, bus memory, shared memory
+3- create threads
+
+-- Afonso
+this_servo_roll: device uavcam::dispositivos::Servo_Motor_Roll;
+this_servo_pitch: device uavcam::dispositivos::Servo_Motor_Pitch;
+this_servo_yaw: device uavcam::dispositivos::Servo_Motor_Yaw;
+
+connection uart
+
+-- Afonso
+this_imu: device uavcam::dispositivos::MPU6050;
+connection: i2c
+
+-- Rafael
+this_camera: device uavcam::dispositivos::camera;
+connection: usb
+
+----------
+this_radio: device uavcam::dispositivos::radio;
+connection: usart
+
+this_UAV: device uavcam::dispositivos::UAV;
+position
+
+this_gimbal_control: process gimbal_control;
+
+-- Angela
+processor
+shared memory
+bus memory
+----------
+
+
+this_board: device uavcam::dispositivos::board;
+
+thread: command servos
+thread: receive imu
+thread: receive radio
+thread: uav position
+thread: stream video
+
+periods of threads: multiples
+
+
+
