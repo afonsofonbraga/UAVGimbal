@@ -1,26 +1,47 @@
 package uavcam
 public
 	
+	--with Electricity_Properties;
 	with uavcam::dispositivos;
-	--with uavcam::tipo_de_dados;
+	with uavcam::tipo_de_dados;
+	--with buses::usb;
+	--with buses::misc;
+	--with buses::USB;
 	
 	
+------------
+-- System --
+------------
 	system UAVGimbal
 	end UAVGimbal;
 	
 	system implementation UAVGimbal.with_devices
 		subcomponents
-			this_roll_sensor: device uavcam::dispositivos::Servo_Motor_Roll;
-			this_pitch_sensor: device uavcam::dispositivos::Servo_Motor_Pitch;
-			this_yaw_sensor: device uavcam::dispositivos::Servo_Motor_Yaw;
+			this_servo_roll: device uavcam::dispositivos::Servo_Motor_Roll;
+			this_servo_pitch: device uavcam::dispositivos::Servo_Motor_Pitch;
+			this_servo_yaw: device uavcam::dispositivos::Servo_Motor_Yaw;
 			this_imu: device uavcam::dispositivos::MPU6050;
 			this_camera: device uavcam::dispositivos::camera;
-			this_platform: device uavcam::dispositivos::platform;
-			this_UAV_controller: device uavcam::dispositivos::UAV_controller;		
+			this_radio: device uavcam::dispositivos::radio;
+			this_board: device uavcam::dispositivos::board;
+			this_UAV_controller: device uavcam::dispositivos::UAV_controller;
+			this_gimbal_control: process gimbal_control;
+		--connections
+			--Serv_Roll_conn: port this_servo_roll. -> this_gimbal_control.
 	end UAVGimbal.with_devices;
-	
+
+-------------
+-- Process --
+-------------	
 	process gimbal_control
-		
+		features
+			PWM_Serv_Roll_out: out data port uavcam::tipo_de_dados::PWM_Rate;
+			PWM_Serv_Pitch_out: out data port uavcam::tipo_de_dados::PWM_Rate;
+			PWM_Serv_Yaw_out: out data port uavcam::tipo_de_dados::PWM_Rate;
+			Attitude_in: in data port uavcam::tipo_de_dados::Six_Axis.impl;
+			--Serial_Wire_Master: requires bus access buses::USB::USB.impl; 
+			--Supply_in : requires bus access buses::Misc::V5_bus.impl; 
+			
 	end gimbal_control;
 	
 	process implementation gimbal_control.with_threads

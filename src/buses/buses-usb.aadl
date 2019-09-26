@@ -1,6 +1,6 @@
 -- This package models USB bus
 
-package Buses::USB
+package buses::USB
 public
   with Bus_Properties;
 
