@@ -17,9 +17,14 @@ connection: i2c
 this_camera: device uavcam::dispositivos::camera;
 connection: usb
 
-----------
+
+-- Angela
 this_radio: device uavcam::dispositivos::radio;
 connection: usart
+
+apareceu um erro na conexao da thread...
+e estou com uma duvida quanto ao acesso de barramento de memoria e barramentos externos.
+----------
 
 this_UAV: device uavcam::dispositivos::UAV;
 position

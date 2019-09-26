@@ -5,13 +5,15 @@ with base_types;
 with data_model;
 
 --------------
-  -- PWM_Rate --
-  --------------
+-- PWM_Rate --
+--------------
 
   data PWM_Rate extends base_types::Unsigned_8
   end PWM_Rate;
 
-  --------------
+--------------------
+-- IMU gyro + acc --
+--------------------
 
   data Six_Axis
   properties
@@ -28,5 +30,23 @@ with data_model;
     Gyro_Z : data base_types::Integer_16;
 
   end Six_Axis.impl;
+
+
+--------------------
+-- Radio position --
+--------------------
+
+data Target_Position
+	properties
+    	data_model::Data_Representation => Array;
+end Target_Position;
+
+  data implementation Target_Position.impl
+  subcomponents
+    X_Ref: data base_types::Integer_16;
+    Y_Ref: data base_types::Integer_16;
+    Z_Ref: data base_types::Integer_16;
+
+  end Target_Position.impl;
 
 end uavcam::tipo_de_dados;
