@@ -1,0 +1,12 @@
+package uavcam::threads_file
+public
+	
+	thread receive_radio	
+		features
+			Target_Position_in: in data port;	
+	end receive_radio;
+	
+	thread implementation receive_radio.impl	
+	end receive_radio.impl;
+	
+end uavcam::threads_file;
