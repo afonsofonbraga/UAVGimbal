@@ -16,9 +16,9 @@ public
 
 	system implementation UAVGimbal.with_devices
 		subcomponents
-			this_servo_roll: device uavcam::dispositivos::Servo_Motor_Roll;
-			this_servo_pitch: device uavcam::dispositivos::Servo_Motor_Pitch;
-			this_servo_yaw: device uavcam::dispositivos::Servo_Motor_Yaw;
+			this_servo_roll: device uavcam::dispositivos::Servo_Motor.impl;
+			this_servo_pitch: device uavcam::dispositivos::Servo_Motor.impl;
+			this_servo_yaw: device uavcam::dispositivos::Servo_Motor.impl;
 			this_imu: device uavcam::dispositivos::MPU6050;
 			this_camera: device uavcam::dispositivos::camera;
 			this_radio: device uavcam::dispositivos::radio;
@@ -31,17 +31,21 @@ public
 			--Serv_Roll_conn: port this_servo_roll. -> this_gimbal_control.
 			radio_conn: port this_radio.radio_position -> this_gimbal_control.Target_Position_in;
 			bus_processor: bus access this_bus -> this_processor.memory_bus;
+			c001: port this_gimbal_control.PWM_Serv_Roll_out -> this_servo_roll.PWM_Serv;
+			c002: port this_gimbal_control.PWM_Serv_Pitch_out -> this_servo_pitch.PWM_Serv;
+			c003: port this_gimbal_control.PWM_Serv_Yaw_out -> this_servo_yaw.PWM_Serv;
+			c004: port this_imu.DOF-> this_gimbal_control.Attitude_in;
 	end UAVGimbal.with_devices;
 
 -------------
 -- Process --
--------------	
+-------------
 	process gimbal_control
 		features
 			PWM_Serv_Roll_out: out data port uavcam::tipo_de_dados::PWM_Rate;
 			PWM_Serv_Pitch_out: out data port uavcam::tipo_de_dados::PWM_Rate;
 			PWM_Serv_Yaw_out: out data port uavcam::tipo_de_dados::PWM_Rate;
-			Attitude_in: in data port uavcam::tipo_de_dados::Six_Axis.impl;			
+			Attitude_in: in data port uavcam::tipo_de_dados::Six_Axis.impl;
 			Target_Position_in: in data port uavcam::tipo_de_dados::Target_Position.impl;
 	end gimbal_control;
 
@@ -54,29 +58,29 @@ public
 
 ---------------
 -- Processor --
----------------	
+---------------
 	processor MainProcessor
 		features
 			memory_bus: requires bus access Shared_Mem_Bus;
 			Serial_Wire_Master: requires bus access buses::USB::USB.impl;
-			Supply_in : requires bus access buses::Misc::V5_bus.impl; 
+			Supply_in : requires bus access buses::Misc::V5_bus.impl;
 	end MainProcessor;
 
--------------------		
+-------------------
 -- Shared Memory --
--------------------	
+-------------------
 	processor implementation MainProcessor.impl
 		subcomponents
 			this_ram: memory Ram;
 	end MainProcessor.impl;
-	
-	memory Ram		
+
+	memory Ram
 	end Ram;
-	
-	bus Shared_Mem_Bus		
+
+	bus Shared_Mem_Bus
 	end Shared_Mem_Bus;
-	
-	bus implementation Shared_Mem_Bus.impl		
+
+	bus implementation Shared_Mem_Bus.impl
 	end Shared_Mem_Bus.impl;
-	
+
 end uavcam;
