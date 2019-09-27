@@ -8,45 +8,58 @@ with data_model;
 -- PWM_Rate --
 --------------
 
-  data PWM_Rate extends base_types::Unsigned_8
-  end PWM_Rate;
+	  data PWM_Rate extends base_types::Unsigned_8
+	  end PWM_Rate;
 
 --------------------
 -- IMU gyro + acc --
 --------------------
 
-  data Six_Axis
-  properties
-    data_model::Data_Representation => Array;
-  end Six_Axis;
+	data Six_Axis
+		properties
+	    	data_model::Data_Representation => Array;
+	end Six_Axis;
+	
+	data implementation Six_Axis.impl
+		subcomponents
+	    Acc_X  : data base_types::Integer_16;
+	    Acc_Y  : data base_types::Integer_16;
+	    Acc_Z  : data base_types::Integer_16;
+	    Gyro_X : data base_types::Integer_16;
+	    Gyro_Y : data base_types::Integer_16;
+	    Gyro_Z : data base_types::Integer_16;
+	
+	end Six_Axis.impl;
 
-  data implementation Six_Axis.impl
-  subcomponents
-    Acc_X  : data base_types::Integer_16;
-    Acc_Y  : data base_types::Integer_16;
-    Acc_Z  : data base_types::Integer_16;
-    Gyro_X : data base_types::Integer_16;
-    Gyro_Y : data base_types::Integer_16;
-    Gyro_Z : data base_types::Integer_16;
 
-  end Six_Axis.impl;
+---------
+-- UAV --
+---------
 
+	data Target_Position
+		properties
+	    	data_model::Data_Representation => Array;
+	end Target_Position;
+	
+	data implementation Target_Position.impl
+		subcomponents
+		    X_Ref: data base_types::Integer_16;
+		    Y_Ref: data base_types::Integer_16;
+		    Z_Ref: data base_types::Integer_16;
+	
+	end Target_Position.impl;
+  
+	data Camera_Low_Res
+	end Camera_Low_Res;
+	
+	data implementation Camera_Low_Res.impl
+	end Camera_Low_Res.impl;
+	
+	data System_Status
+	end System_Status;
+	
+	data implementation System_Status.impl
+	end System_Status.impl;
 
---------------------
--- Radio position --
---------------------
-
-data Target_Position
-	properties
-    	data_model::Data_Representation => Array;
-end Target_Position;
-
-  data implementation Target_Position.impl
-  subcomponents
-    X_Ref: data base_types::Integer_16;
-    Y_Ref: data base_types::Integer_16;
-    Z_Ref: data base_types::Integer_16;
-
-  end Target_Position.impl;
 
 end uavcam::tipo_de_dados;

@@ -6,8 +6,8 @@ public
 	with uavcam::tipo_de_dados;
 	with uavcam::threads_file;
 
-	with buses::misc;
-	with buses::USB;
+	--with buses::misc;
+	--with buses::USB;
 ------------
 -- System --
 ------------
@@ -21,20 +21,20 @@ public
 			this_servo_yaw: device uavcam::dispositivos::Servo_Motor.impl;
 			this_imu: device uavcam::dispositivos::MPU6050;
 			this_camera: device uavcam::dispositivos::camera;
-			this_radio: device uavcam::dispositivos::radio;
-			this_board: device uavcam::dispositivos::board;
+			this_sd_card: device uavcam::dispositivos::SD_card;
 			this_UAV: device uavcam::dispositivos::UAV;
 			this_gimbal_control: process gimbal_control;
 			this_processor: processor MainProcessor.impl;
 			this_bus: bus Shared_Mem_Bus;
 		connections
-			--Serv_Roll_conn: port this_servo_roll. -> this_gimbal_control.
-			radio_conn: port this_radio.radio_position -> this_gimbal_control.Target_Position_in;
+			uav_conn: port this_UAV.radio_position -> this_gimbal_control.Target_Position_in;
 			bus_processor: bus access this_bus -> this_processor.memory_bus;
 			c001: port this_gimbal_control.PWM_Serv_Roll_out -> this_servo_roll.PWM_Serv;
 			c002: port this_gimbal_control.PWM_Serv_Pitch_out -> this_servo_pitch.PWM_Serv;
 			c003: port this_gimbal_control.PWM_Serv_Yaw_out -> this_servo_yaw.PWM_Serv;
 			c004: port this_imu.DOF-> this_gimbal_control.Attitude_in;
+		--properties
+    		--Concurrency_Control_Protocol => Priority_Ceiling applies to uavcam::threads_file::receive_radio;
 	end UAVGimbal.with_devices;
 
 -------------
@@ -52,8 +52,8 @@ public
 	process implementation gimbal_control.with_threads
 		subcomponents
 			this_thread_radio: thread uavcam::threads_file::receive_radio;
-		connections
-			target_position_conn: port Target_Position_in -> this_thread_radio.Target_Position_in;
+		--connections
+			--target_position_conn: port Target_Position_in -> this_thread_radio.Target_Position_in;
 	end gimbal_control.with_threads;
 
 ---------------
@@ -62,21 +62,27 @@ public
 	processor MainProcessor
 		features
 			memory_bus: requires bus access Shared_Mem_Bus;
-			Serial_Wire_Master: requires bus access buses::USB::USB.impl;
-			Supply_in : requires bus access buses::Misc::V5_bus.impl;
+			--Serial_Wire_Master: requires bus access buses::USB::USB.impl;
+			--Supply_in : requires bus access buses::Misc::V5_bus.impl;
 	end MainProcessor;
+
+	processor implementation MainProcessor.impl
+		subcomponents
+			this_ram: memory Ram;
+			--this_sd_card: memory SD_card;
+		properties
+    		Scheduling_Protocol => (POSIX_1003_HIGHEST_PRIORITY_FIRST_PROTOCOL);		
+	end MainProcessor.impl;
 
 -------------------
 -- Shared Memory --
 -------------------
-	processor implementation MainProcessor.impl
-		subcomponents
-			this_ram: memory Ram;
-	end MainProcessor.impl;
-
 	memory Ram
 	end Ram;
 
+	--memory SD_card
+	--end SD_card;
+	
 	bus Shared_Mem_Bus
 	end Shared_Mem_Bus;
 

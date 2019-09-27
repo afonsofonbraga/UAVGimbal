@@ -3,7 +3,14 @@ public
 	
 	thread receive_radio	
 		features
-			Target_Position_in: in data port;	
+			Target_Position_in: in data port;
+		properties
+		    Dispatch_protocol => periodic;
+		    period => 200 ms;
+		    compute_execution_time => 2 ms .. 2 ms;
+		    deadline => 200 ms;
+		    priority => 2;
+		    POSIX_Scheduling_Policy => SCHED_FIFO;	
 	end receive_radio;
 	
 	thread implementation receive_radio.impl	
