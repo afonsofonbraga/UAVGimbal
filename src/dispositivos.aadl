@@ -9,7 +9,7 @@ public
   	with buses::USB;
 
 ---------------------
---  Unidade Móvel Inercial - MPU6050
+--  Unidade Mï¿½vel Inercial - MPU6050
 ---------------------
 	device IMU_generic
 		features
@@ -59,7 +59,7 @@ public
 	end IMU_generic;
 
 ---------------------
---  Unidade Móvel Inercial - MPU6050
+--  Unidade Movel Inercial - MPU6050
 ---------------------
 	device MPU6050 extends IMU_generic
 		features
@@ -180,11 +180,11 @@ public
 --  Servo Motors --
 -------------------
 
-	device Servo_Motor_Roll
+	device Servo_Motor
 		features
-			PWM_Serv_Roll: in data port uavcam::tipo_de_dados::PWM_Rate;
+			PWM_Serv: in data port uavcam::tipo_de_dados::PWM_Rate;
 		flows
-			f0: flow sink PWM_Serv_Roll {latency => 200us .. 500us;};
+			f0: flow sink PWM_Serv {latency => 200us .. 500us;};
 		properties
 			Dispatch_Protocol => Periodic;
 			Period => 20ms; -- depende da tecnologia do ESC
@@ -193,93 +193,25 @@ public
 			use behavior ErrorLibrary::FailStop;
 			
 			error propagations
-				PWM_Serv_Roll: in propagation {ItemOmission, OutOfRange};
+				PWM_Serv: in propagation {ItemOmission, OutOfRange};
 			flows
-				ef0: error sink PWM_Serv_Roll {ItemOmission, OutOfRange};
+				ef0: error sink PWM_Serv {ItemOmission, OutOfRange};
 			end propagations;
 			
 			component error behavior
 			events
 				Reset: recover event;
 			transitions
-				t0: Operational -[PWM_Serv_Roll {ItemOmission}]-> FailStop;
-				t1: Operational -[PWM_Serv_Roll {OutOfRange}]-> FailStop;
+				t0: Operational -[PWM_Serv {ItemOmission}]-> FailStop;
+				t1: Operational -[PWM_Serv {OutOfRange}]-> FailStop;
 				t2: FailStop -[Reset]-> Operational;
 			end component;
 		**};
-	end Servo_Motor_Roll;
+	end Servo_Motor;
 	
 	
-	device implementation Servo_Motor_Roll.impl
+	device implementation Servo_Motor.impl
 		
-	end Servo_Motor_Roll.impl;
-	
-	device Servo_Motor_Pitch
-		features
-			PWM_Serv_Pitch: in data port uavcam::tipo_de_dados::PWM_Rate;
-		flows
-			f0: flow sink PWM_Serv_Pitch {latency => 200us .. 500us;};
-		properties
-			Dispatch_Protocol => Periodic;
-			Period => 20ms; -- depende da tecnologia do ESC
-		annex EMV2 {**
-			use types ErrorLibrary;
-			use behavior ErrorLibrary::FailStop;
-			
-			error propagations
-				PWM_Serv_Pitch: in propagation {ItemOmission, OutOfRange};
-			flows
-				ef0: error sink PWM_Serv_Pitch {ItemOmission, OutOfRange};
-			end propagations;
-			
-			component error behavior
-			events
-				Reset: recover event;
-			transitions
-				t0: Operational -[PWM_Serv_Pitch {ItemOmission}]-> FailStop;
-				t1: Operational -[PWM_Serv_Pitch {OutOfRange}]-> FailStop;
-				t2: FailStop -[Reset]-> Operational;
-			end component;
-		**};
-	end Servo_Motor_Pitch;	
-	
-	device implementation Servo_Motor_Pitch.impl
-		
-	end Servo_Motor_Pitch.impl;
-	
-	
-	device Servo_Motor_Yaw 
-		features
-			PWM_Serv_Yaw: in data port uavcam::tipo_de_dados::PWM_Rate;
-		flows
-			f0: flow sink PWM_Serv_Yaw {latency => 200us .. 500us;};
-		properties
-			Dispatch_Protocol => Periodic;
-			Period => 20ms; -- depende da tecnologia do ESC
-		annex EMV2 {**
-			use types ErrorLibrary;
-			use behavior ErrorLibrary::FailStop;
-			
-			error propagations
-				PWM_Serv_Yaw: in propagation {ItemOmission, OutOfRange};
-			flows
-				ef0: error sink PWM_Serv_Yaw {ItemOmission, OutOfRange};
-			end propagations;
-			
-			component error behavior
-			events
-				Reset: recover event;
-			transitions
-				t0: Operational -[PWM_Serv_Yaw {ItemOmission}]-> FailStop;
-				t1: Operational -[PWM_Serv_Yaw {OutOfRange}]-> FailStop;
-				t2: FailStop -[Reset]-> Operational;
-			end component;
-		**};
-	end Servo_Motor_Yaw;	
-	
-	
-	device implementation Servo_Motor_Yaw.impl
-		
-	end Servo_Motor_Yaw.impl;
+	end Servo_Motor.impl;
 	
 end uavcam::dispositivos;
