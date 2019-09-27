@@ -3,10 +3,14 @@ public
 	with uavcam::tipo_de_dados;
 
 	with Electricity_Properties;
-	
+
 	with types;
-  	with buses::misc;
-  	with buses::USB;
+
+	with buses::misc;
+
+	with buses::USB;
+
+	with Buses::UART;
 
 ---------------------
 --  Unidade M�vel Inercial - MPU6050
@@ -15,7 +19,7 @@ public
 		features
 			DOF6: out data port uavcam::tipo_de_dados::Six_Axis.impl;
 		properties
-			--Initialize_Entrypoint => classifier (devices::gps_lea4h::Initialize);
+				--Initialize_Entrypoint => classifier (devices::gps_lea4h::Initialize);
 			Electricity_Properties::Idle_Current => 0.065mA;
 			Electricity_Properties::Run_Current => 39.0mA; --  at 3.0 V 
 			Electricity_Properties::Peak_Current => 100.0mA; -- to measure
@@ -72,114 +76,96 @@ public
 	end MPU6050;
 
 	device implementation MPU6050.impl
-		
 	end MPU6050.impl;
 
 -------------------	
 --     Camera    --
 -------------------
-
 	device camera
 		features
 			Serial_Wire: requires bus access buses::USB::USB.impl;
-    		Supply: requires bus access buses::misc::V5_Bus.impl;
-    		proc_evt: out event port;
+			Supply: requires bus access buses::misc::V5_Bus.impl;
+			proc_evt: out event port;
 	end camera;
 
 	device implementation CAMERA.impl
-  		properties
-		    Initialize_Entrypoint => classifier (Initialize);
-		    Electricity_Properties::Idle_Current => 1.0 mA;  -- no data
-		    Electricity_Properties::Run_Current =>  50.0 mA; --  no data
-		    Electricity_Properties::Peak_Current => 100.0 mA; -- to measure
-		    Electricity_Properties::Core_Voltage => 5.0 V; -- 4.75 .. 5.25 V  standard USB range
-		    Electricity_Properties::Acquisition_Time => 1 sec; -- no data
-		    Electricity_Properties::Peak_Time => 1 ms;
-		    Electricity_Properties::VIH_min => 2.0 V;
-		    Electricity_Properties::VIL_max => 1.0 V;
-		    Electricity_Properties::VOH_min => 3.2 V;
-		    Electricity_Properties::VOL_max => 0.4 V;
-		    Electricity_Properties::Device_Type => Slave;
-  	end CAMERA.impl;
+		properties
+			Initialize_Entrypoint => classifier (Initialize);
+			Electricity_Properties::Idle_Current => 1.0mA; -- no data
+			Electricity_Properties::Run_Current => 50.0mA; --  no data
+			Electricity_Properties::Peak_Current => 100.0mA; -- to measure
+			Electricity_Properties::Core_Voltage => 5.0V; -- 4.75 .. 5.25 V  standard USB range
+			Electricity_Properties::Acquisition_Time => 1 sec; -- no data
+			Electricity_Properties::Peak_Time => 1ms;
+			Electricity_Properties::VIH_min => 2.0V;
+			Electricity_Properties::VIL_max => 1.0V;
+			Electricity_Properties::VOH_min => 3.2V;
+			Electricity_Properties::VOL_max => 0.4V;
+			Electricity_Properties::Device_Type => Slave;
+	end CAMERA.impl;
 
-	  abstract CAMERA_Driver
-	  end CAMERA_Driver;
-	
-	  abstract implementation CAMERA_Driver.impl
-	  end CAMERA_Driver.impl;
+	abstract CAMERA_Driver
+	end CAMERA_Driver;
 
-  -----------------
-  -- SUBPROGRAMS --
-  -----------------
+	abstract implementation CAMERA_Driver.impl
+	end CAMERA_Driver.impl;
 
-  subprogram Initialize
-  properties
-    Source_Name => "initialize";
-    Source_Text => ("camera_usb.c");
-    Source_Language => (C);
-  end Initialize;
+		-----------------
+		-- SUBPROGRAMS --
+		-----------------
+	subprogram Initialize
+		properties
+			Source_Name => "initialize";
+			Source_Text => ("camera_usb.c");
+			Source_Language => (C);
+	end Initialize;
 
-  subprogram Read_Acquisition
-  features
-    CAMERA_meas: out parameter types::CAMERA_meas_dat;
-  properties
-    Source_Name => "read_acquisition";
-    Source_Text => ("camera_usb.c");
-    Source_Language => (C);
-  end Read_Acquisition;
+	subprogram Read_Acquisition
+		features
+			CAMERA_meas: out parameter types::CAMERA_meas_dat;
+		properties
+			Source_Name => "read_acquisition";
+			Source_Text => ("camera_usb.c");
+			Source_Language => (C);
+	end Read_Acquisition;
 
-  subprogram Start_Acquisition
-  properties
-    Source_Name => "start_acquisition";
-    Source_Text => ("camera_usb.c");
-    Source_Language => (C);
-  end Start_Acquisition;
+	subprogram Start_Acquisition
+		properties
+			Source_Name => "start_acquisition";
+			Source_Text => ("camera_usb.c");
+			Source_Language => (C);
+	end Start_Acquisition;
 
+-------------
+-- SD Card --
+-------------
+	device SD_card
+	end SD_card;
 
-
------------
--- Board --
------------
-
-	device board
-		
-	end board;
-	
-	device implementation board.impl
-		
-	end board.impl;
+	device implementation SD_card.impl
+	end SD_card.impl;
 
 --------------------	
 -- UAV controller --
 --------------------
-
 	device UAV
 		features
-			Supply : requires bus access buses::Misc::V5_bus.impl;
-		
-	end UAV;
-	
-	device implementation UAV.impl
-		
-	end UAV.impl;
-	
-----------------------------	
--- Radio (Remote control) --
-----------------------------
-	device radio
-		features
-			--Serial_Wire: requires bus access buses::UART::UART.impl;
+			Supply: requires bus access buses::Misc::V5_bus.impl;
+			
+			Serial_Wire: requires bus access Buses::UART::UART.impl;
+			
 			radio_position: out data port uavcam::tipo_de_dados::Target_Position.impl;
-	end radio;
+			cam_low_res: in data port uavcam::tipo_de_dados::Camera_Low_Res.impl;
+			sys_status: in data port uavcam::tipo_de_dados::System_Status.impl;
+	end UAV;
 
-	device implementation radio.impl
-		
-	end radio.impl;
-	
+	device implementation UAV.impl
+	end UAV.impl;
+
+
 -------------------	
 --  Servo Motors --
 -------------------
-
 	device Servo_Motor
 		features
 			PWM_Serv: in data port uavcam::tipo_de_dados::PWM_Rate;
@@ -208,10 +194,8 @@ public
 			end component;
 		**};
 	end Servo_Motor;
-	
-	
+
 	device implementation Servo_Motor.impl
-		
 	end Servo_Motor.impl;
 	
 end uavcam::dispositivos;

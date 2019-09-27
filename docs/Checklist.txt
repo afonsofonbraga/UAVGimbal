@@ -22,27 +22,32 @@ connection: usb
 
 
 -- Angela
-this_radio: device uavcam::dispositivos::radio;
-connection: usart
-
-apareceu um erro na conexao da thread...
-e estou com uma duvida quanto ao acesso de barramento de memoria e barramentos externos.
-----------
-
 this_UAV: device uavcam::dispositivos::UAV;
 position
 
-this_gimbal_control: process gimbal_control;
+a conexão do rádio será feita via UAV.
+connection: usart
 
+Recebe comandos de rádio
+Envia dados de operação e saúde
+Envia imagens de baixa resolução
+
+----------
 -- Angela
 processor
+
+
 shared memory
 bus memory
+
+SD card
+Incluí SD_card como device, mas deixei comentado se fosse memória.
+
 ----------
 
+-- this_board: device uavcam::dispositivos::board;
 
-this_board: device uavcam::dispositivos::board;
-
+this_gimbal_control: process gimbal_control;
 thread: command servos
 thread: receive imu
 thread: receive radio
@@ -52,4 +57,8 @@ thread: stream video
 periods of threads: multiples
 
 
+------------
+Time Analysis
+Bus budget
+Power consumption
 
