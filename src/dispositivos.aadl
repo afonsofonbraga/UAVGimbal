@@ -11,6 +11,10 @@ public
 	with buses::misc;
 
 	with buses::USB;
+	
+	with buses::I2C;
+	
+	with buses::pwm;
 
 	--with Buses::UART;
 	
@@ -22,7 +26,7 @@ public
 	device IMU_generic
 		features
 			DOF6: out data port uavcam::tipo_de_dados::Six_Axis.impl;
-			bus_access: requires bus access uavcam::Connection_Bus;
+			i2c_bus: requires bus access Buses::I2c::I2C;
 		properties
 				--Initialize_Entrypoint => classifier (devices::gps_lea4h::Initialize);
 			Electricity_Properties::Idle_Current => 0.065mA;
@@ -150,11 +154,11 @@ public
 		features
 			store_data_in: in data port uavcam::tipo_de_dados::Store_Data.impl;
 			bus_access: requires bus access uavcam::Connection_Bus;
-		flows -- Valores arbitrários de latência. Verificar valroes reais.
+		flows -- Valores arbitrï¿½rios de latï¿½ncia. Verificar valroes reais.
 			f1_save: flow sink store_data_in {latency => 100us .. 300us;};
 		properties
 			Dispatch_Protocol => Periodic;
-			Period => 10ms; -- Igualar ao período da thread de processamento de imagem
+			Period => 10ms; -- Igualar ao perï¿½odo da thread de processamento de imagem
 	end SD_card;
 
 	device implementation SD_card.impl
@@ -175,7 +179,7 @@ public
 			
 			bus_access: requires bus access uavcam::Connection_Bus;
 			
-		flows -- Valores arbitrários de latência. Verificar valroes reais.
+		flows -- Valores arbitrï¿½rios de latï¿½ncia. Verificar valroes reais.
 			f1_radio: flow source radio_controller {latency => 100us .. 300us;};
 			f2_cam: flow sink cam_low_res {latency => 100us .. 300us;};
 			f3_sys_status: flow sink sys_status {latency => 100us .. 300us;};
@@ -194,7 +198,7 @@ public
 	device Servo_Motor
 		features
 			PWM_Serv: in data port uavcam::tipo_de_dados::PWM_Rate;
-			bus_access: requires bus access uavcam::Connection_Bus;
+			pwm_bus: requires bus access buses::pwm::pwm;
 		flows
 			f0: flow sink PWM_Serv {latency => 200us .. 500us;};
 		properties
