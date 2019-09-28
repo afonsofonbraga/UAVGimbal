@@ -6,6 +6,8 @@ public
 	with uavcam::tipo_de_dados;
 	with uavcam::threads_file;
 
+    with Buses::I2C;
+    with buses::pwm;
 	--with buses::misc;
 	--with buses::USB;
 ------------
@@ -26,6 +28,8 @@ public
 			this_gimbal_control: process gimbal_control;
 			this_processor: processor MainProcessor.impl;
 			this_bus: bus Connection_Bus.impl;
+			i2c_bus: bus BUSES::I2C::I2C;
+			pwm_bus: bus buses::pwm::pwm;
 		connections
 			-- ports
 			c001: port this_gimbal_control.PWM_Serv_Roll_out -> this_servo_roll.PWM_Serv;
@@ -42,13 +46,19 @@ public
 			
 			-- buses
 			bus_processor: bus access this_bus -> this_processor.bus_access;
-			bus_servo_roll: bus access this_bus -> this_servo_roll.bus_access;
-			bus_servo_pitch: bus access this_bus -> this_servo_pitch.bus_access;
-			bus_servo_yaw: bus access this_bus -> this_servo_yaw.bus_access;
-			bus_imu: bus access this_bus -> this_imu.bus_access;
+			
 			bus_camera: bus access this_bus -> this_camera.bus_access;
 			bus_sd_card: bus access this_bus -> this_sd_card.bus_access;
 			bus_UAV: bus access this_bus -> this_UAV.bus_access;
+			
+			-- Processor to bus
+			buss_processor_i2c: bus access i2c_bus <-> this_processor.i2c_bus;
+			buss_processor_pwm: bus access pwm_bus -> this_processor.pwm_bus;
+			-- buss to devices
+			bus_imu: bus access i2c_bus <-> this_imu.i2c_bus;
+			bus_servo_roll: bus access pwm_bus -> this_servo_roll.pwm_bus;
+			bus_servo_pitch: bus access pwm_bus -> this_servo_pitch.pwm_bus;
+			bus_servo_yaw: bus access pwm_bus -> this_servo_yaw.pwm_bus;
 			
 		--properties
     		--Concurrency_Control_Protocol => Priority_Ceiling applies to uavcam::threads_file::receive_radio;
@@ -98,6 +108,8 @@ public
 	processor MainProcessor
 		features
 			bus_access: requires bus access uavcam::Connection_Bus;
+			i2c_bus: requires bus access Buses::I2C::I2C;
+			pwm_bus: requires bus access buses::pwm::pwm;
 			--Serial_Wire_Master: requires bus access buses::USB::USB.impl;
 			--Supply_in : requires bus access buses::Misc::V5_bus.impl;
 	end MainProcessor;
