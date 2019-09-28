@@ -10,6 +10,9 @@ with data_model;
 
 	  data PWM_Rate extends base_types::Unsigned_8
 	  end PWM_Rate;
+	  
+	  data implementation PWM_Rate.impl
+	  end PWM_Rate.impl;
 
 --------------------
 -- IMU gyro + acc --
@@ -31,6 +34,15 @@ with data_model;
 	
 	end Six_Axis.impl;
 
+-------------
+-- SD Card --
+-------------
+
+	data Store_Data
+	end Store_Data;
+	
+	data implementation Store_Data.impl
+	end Store_Data.impl;
 
 ---------
 -- UAV --
