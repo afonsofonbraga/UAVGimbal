@@ -7,6 +7,8 @@ this_servo_roll: device uavcam::dispositivos::Servo_Motor_Roll;
 this_servo_pitch: device uavcam::dispositivos::Servo_Motor_Pitch;
 this_servo_yaw: device uavcam::dispositivos::Servo_Motor_Yaw;
 
+Fazer as conexões das threads.
+
 -- Todos os servomotores já estão com suas ports atualizadas. Criei um device apenas para os 3.
 
 connection uart
@@ -20,6 +22,8 @@ Conectado no processo também
 this_camera: device uavcam::dispositivos::camera;
 connection: usb
 
+Fazer a conexão da câmera.
+Fazer as conexões das threads.
 
 -- Angela
 this_UAV: device uavcam::dispositivos::UAV;
@@ -32,6 +36,10 @@ Recebe comandos de rádio
 Envia dados de operação e saúde
 Envia imagens de baixa resolução
 
+-- Angela
+SD card
+Incluí SD_card como device, mas deixei comentado se fosse memória.
+
 ----------
 -- Angela
 processor
@@ -40,19 +48,9 @@ processor
 shared memory
 bus memory
 
-SD card
-Incluí SD_card como device, mas deixei comentado se fosse memória.
+
 
 ----------
-
--- this_board: device uavcam::dispositivos::board;
-
-this_gimbal_control: process gimbal_control;
-thread: command servos
-thread: receive imu
-thread: receive radio
-thread: uav position
-thread: stream video
 
 periods of threads: multiples
 
