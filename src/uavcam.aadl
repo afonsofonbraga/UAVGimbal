@@ -37,7 +37,7 @@ public
 			bus_pwm_conn2: port this_gimbal_control.PWM_Serv_Pitch_out -> this_servo_pitch.PWM_Serv;
 			bus_pwm_conn3: port this_gimbal_control.PWM_Serv_Yaw_out -> this_servo_yaw.PWM_Serv;
 			
-			c004: port this_imu.DOF-> this_gimbal_control.Attitude_in;
+			bus_imu_conn: port this_imu.DOF-> this_gimbal_control.Attitude_in;
 			
 			sd_card_conn: port this_gimbal_control.store_data_out -> this_sd_card.store_data_in;
 			
@@ -79,8 +79,6 @@ public
 			
 			Attitude_in: in data port uavcam::tipo_de_dados::Six_Axis.impl;
 			
-			
-			
 			store_data_out: out data port uavcam::tipo_de_dados::Store_Data.impl;			
 			
 			radio_controller_in: in data port uavcam::tipo_de_dados::Target_Position.impl;
@@ -104,6 +102,10 @@ public
 			store_video_conn: port this_thread_process_video.video_to_sd_card -> store_data_out;
 			send_video_conn: port this_thread_process_video.video_to_uav -> cam_low_res_out;
 			send_status_conn: port this_thread_health_mgr.status_to_uav -> sys_status_out;
+			
+			send_pwm_roll_conn: port this_thread_control_servos.Move_Roll_Out -> PWM_Serv_Roll_out;
+			send_pwm_pitch_conn: port this_thread_control_servos.Move_Pitch_Out -> PWM_Serv_Pitch_out;
+			send_pwm_yaw_conn: port this_thread_control_servos.Move_Yaw_Out -> PWM_Serv_Yaw_out;
 	end gimbal_control.with_threads;
 
 ---------------

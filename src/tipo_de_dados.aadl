@@ -14,6 +14,15 @@ with data_model;
 	  data implementation PWM_Rate.impl
 	  end PWM_Rate.impl;
 
+	  data PWM_Rate_Group
+	  end PWM_Rate_Group;
+	  
+	  data implementation PWM_Rate_Group.impl
+	  	subcomponents
+	  	roll: data uavcam::tipo_de_dados::PWM_Rate;
+	  	pitch: data uavcam::tipo_de_dados::PWM_Rate;
+	  	yaw: data uavcam::tipo_de_dados::PWM_Rate;
+	  end PWM_Rate_Group.impl;
 --------------------
 -- IMU gyro + acc --
 --------------------
