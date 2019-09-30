@@ -24,7 +24,7 @@ public
 		features
 			Attitude_IMU: in data port uavcam::tipo_de_dados::Six_Axis.impl;
 			Radio_Command_in: in data port uavcam::tipo_de_dados::Target_Position.impl;
-			Move_Servos_Out: out data port uavcam::tipo_de_dados::PWM_Rate.impl;
+			Move_Servos_Out: out data port uavcam::tipo_de_dados::PWM_Rate_Group.impl;
 	end get_attitude;
 	
 	thread implementation get_attitude.impl	
@@ -32,7 +32,17 @@ public
 	
 	thread control_servos
 		features
-			Move_Servos_In: in data port uavcam::tipo_de_dados::PWM_Rate.impl;
+			Move_Servos_In: in data port uavcam::tipo_de_dados::PWM_Rate_Group.impl;
+			Move_Roll_Out: out data port uavcam::tipo_de_dados::PWM_Rate.impl; 
+			Move_Pitch_Out: out data port uavcam::tipo_de_dados::PWM_Rate.impl; 
+			Move_Yaw_Out: out data port uavcam::tipo_de_dados::PWM_Rate.impl; 
+		properties
+			Dispatch_protocol => periodic;
+		    period => 100 ms;
+		    compute_execution_time => 2 ms .. 2 ms;
+		    deadline => 100 ms;
+		    priority => 2;
+		    POSIX_Scheduling_Policy => SCHED_FIFO;	
 	end control_servos;	
 	
 	thread implementation control_servos.impl	

@@ -96,7 +96,6 @@ public
 			Supply: requires bus access buses::misc::V5_Bus.impl;
 			proc_evt: out event port;
 			
-			bus_access: requires bus access uavcam::Connection_Bus;
 	end camera;
 
 	device implementation CAMERA.impl
