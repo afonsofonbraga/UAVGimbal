@@ -1,14 +1,14 @@
 package uavcam::dispositivos
 public
 	
-	with uavcam;
+	--with uavcam;
 	with uavcam::tipo_de_dados;
 
 	with Electricity_Properties;
 
 	with types;
 
-	with buses::misc;
+	--with buses::misc;
 
 	with buses::USB;
 	
@@ -16,7 +16,9 @@ public
 	
 	with buses::pwm;
 
-	--with Buses::UART;
+	with Buses::UART;
+	
+	with buses::SPI;
 	
 	
 
@@ -92,9 +94,11 @@ public
 -------------------
 	device camera
 		features
-			Serial_Wire: requires bus access buses::USB::USB.impl;
-			Supply: requires bus access buses::misc::V5_Bus.impl;
-			proc_evt: out event port;
+			Cam_Serial_Wire: requires bus access buses::USB::USB.impl;
+			
+			cam_stream_out: out data port uavcam::tipo_de_dados::Camera_Frame.impl;
+			--Supply: requires bus access buses::misc::V5_Bus.impl;
+			--proc_evt: out event port;
 			
 	end camera;
 
@@ -152,7 +156,7 @@ public
 	device SD_card
 		features
 			store_data_in: in data port uavcam::tipo_de_dados::Store_Data.impl;
-			bus_access: requires bus access uavcam::Connection_Bus;
+			SD_card_Serial_Wire: requires bus access Buses::SPI::SPI;
 		flows -- Valores arbitr�rios de lat�ncia. Verificar valroes reais.
 			f1_save: flow sink store_data_in {latency => 100us .. 300us;};
 		properties
@@ -172,11 +176,13 @@ public
 			
 			--Serial_Wire: requires bus access Buses::UART::UART.impl;
 			
+			UAV_Serial_Wire: requires bus access Buses::UART::UART;
+			
 			radio_controller: out data port uavcam::tipo_de_dados::Target_Position.impl;
 			cam_low_res: in data port uavcam::tipo_de_dados::Camera_Low_Res.impl;
 			sys_status: in data port uavcam::tipo_de_dados::System_Status.impl;
 			
-			bus_access: requires bus access uavcam::Connection_Bus;
+			--bus_access: requires bus access uavcam::Connection_Bus;
 			
 		flows -- Valores arbitr�rios de lat�ncia. Verificar valroes reais.
 			f1_radio: flow source radio_controller {latency => 100us .. 300us;};

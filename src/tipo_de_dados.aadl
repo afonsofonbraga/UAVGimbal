@@ -23,6 +23,7 @@ with data_model;
 	  	pitch: data uavcam::tipo_de_dados::PWM_Rate;
 	  	yaw: data uavcam::tipo_de_dados::PWM_Rate;
 	  end PWM_Rate_Group.impl;
+
 --------------------
 -- IMU gyro + acc --
 --------------------
@@ -42,6 +43,17 @@ with data_model;
 	    Gyro_Z : data base_types::Integer_16;
 	
 	end Six_Axis.impl;
+
+------------
+-- Camera --
+------------
+
+	data Camera_Frame
+	end Camera_Frame;
+	
+	data implementation Camera_Frame.impl
+	end Camera_Frame.impl;
+
 
 -------------
 -- SD Card --

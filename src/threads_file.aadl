@@ -49,10 +49,18 @@ public
 	end control_servos.impl;
 	
 	thread process_video
-		features
-			video_from_camera: in data port;
-			video_to_sd_card: out data port uavcam::tipo_de_dados::Store_Data.impl;
-			video_to_uav: out data port uavcam::tipo_de_dados::Camera_Low_Res.impl;
+	  features
+	    video_from_camera: in data port uavcam::tipo_de_dados::Camera_Frame.impl;	    
+	    video_to_sd_card: out data port uavcam::tipo_de_dados::Store_Data.impl;
+	    video_to_uav: out data port uavcam::tipo_de_dados::Camera_Low_Res.impl;
+	    
+	  properties
+	    Dispatch_protocol => periodic;
+	      period => 1000 ms;
+	      compute_execution_time => 2 ms .. 2 ms;
+	      deadline => 1000 ms;
+	      priority => 2;
+	      POSIX_Scheduling_Policy => SCHED_FIFO;
 	end process_video;
 	
 	thread implementation process_video.impl	
