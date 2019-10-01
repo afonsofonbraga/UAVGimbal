@@ -10,6 +10,8 @@ public
     with buses::pwm;
 	--with buses::misc;
 	with buses::USB;
+	with Buses::UART;
+	with Buses::SPI;
 ------------
 -- System --
 ------------
@@ -31,6 +33,8 @@ public
 			this_i2c_bus: bus BUSES::I2C::I2C;
 			this_pwm_bus: bus buses::pwm::pwm;
 			this_usb_cam: bus buses::USB::USB;
+			this_uart_bus: bus Buses::UART::UART;
+			this_spi_bus: bus Buses::SPI::SPI;
 		connections
 			-- ports
 			bus_pwm_conn1: port this_gimbal_control.PWM_Serv_Roll_out -> this_servo_roll.PWM_Serv;
@@ -39,6 +43,8 @@ public
 			
 			bus_imu_conn: port this_imu.DOF-> this_gimbal_control.Attitude_in;
 			
+			bus_cam_conn: port this_camera.cam_stream_out -> this_gimbal_control.camera_stream_in;
+			
 			sd_card_conn: port this_gimbal_control.store_data_out -> this_sd_card.store_data_in;
 			
 			uav_radio_conn: port this_UAV.radio_controller -> this_gimbal_control.radio_controller_in;
@@ -46,23 +52,33 @@ public
 			uav_status_conn: port this_gimbal_control.sys_status_out -> this_UAV.sys_status;
 			
 			-- buses
+			
+			-- Processor to memory
 			bus_processor: bus access this_bus -> this_processor.bus_access;
 			
-			
-			bus_sd_card: bus access this_bus -> this_sd_card.bus_access;
-			bus_UAV: bus access this_bus -> this_UAV.bus_access;
 			
 			-- Processor to bus
 			bus_processor_i2c: bus access this_i2c_bus <-> this_processor.i2c_bus;
 			bus_processor_pwm: bus access this_pwm_bus -> this_processor.pwm_bus;
-			bus_processor_usb: bus access this_usb_cam <-> this_processor.usb_bus;
-			-- buss to devices
+			bus_processor_usb: bus access this_usb_cam <-> this_processor.usb_bus;			
+			bus_processor_uart: bus access this_uart_bus <-> this_processor.uart_bus;
+			bus_processor_spi_bus: bus access this_spi_bus <-> this_processor.spi_bus;
+			
+			
+			-- Bus to devices
 			bus_imu: bus access this_i2c_bus <-> this_imu.i2c_bus;
 			bus_servo_roll: bus access this_pwm_bus -> this_servo_roll.pwm_bus;
 			bus_servo_pitch: bus access this_pwm_bus -> this_servo_pitch.pwm_bus;
 			bus_servo_yaw: bus access this_pwm_bus -> this_servo_yaw.pwm_bus;
+			bus_camera: bus access this_usb_cam <-> this_camera.Cam_Serial_Wire;
+			bus_uav: bus access this_uart_bus <-> this_uav.UAV_Serial_Wire;
+			bus_sd_card: bus access this_spi_bus <-> this_sd_card.SD_card_Serial_Wire;
 			
-			bus_camera: bus access this_usb_cam <-> this_camera.Serial_Wire;
+			-- Power supply bus
+			--bus_processor_usb_sup: bus access this_usb_sup -> this_processor.Supply_in;
+			
+			-- Alimentação 5V
+			--bus_sup_cam: bus access this_usb_sup -> this_camera.Supply;
 			
 		--properties
     		--Concurrency_Control_Protocol => Priority_Ceiling applies to uavcam::threads_file::receive_radio;
@@ -78,6 +94,8 @@ public
 			PWM_Serv_Yaw_out: out data port uavcam::tipo_de_dados::PWM_Rate;
 			
 			Attitude_in: in data port uavcam::tipo_de_dados::Six_Axis.impl;
+			
+			camera_stream_in: in data port uavcam::tipo_de_dados::Camera_Frame.impl;
 			
 			store_data_out: out data port uavcam::tipo_de_dados::Store_Data.impl;			
 			
@@ -99,9 +117,14 @@ public
 			attitude_in_conn: port Attitude_in -> this_thread_attitude.Attitude_IMU;
 			command_conn: port this_thread_radio_command.Target_Position_Out -> this_thread_attitude.Radio_Command_in;
 			movement_conn: port this_thread_attitude.Move_Servos_Out -> this_thread_control_servos.Move_Servos_In;
+			cam_stream_conn: port camera_stream_in -> this_thread_process_video.video_from_camera;
 			store_video_conn: port this_thread_process_video.video_to_sd_card -> store_data_out;
 			send_video_conn: port this_thread_process_video.video_to_uav -> cam_low_res_out;
 			send_status_conn: port this_thread_health_mgr.status_to_uav -> sys_status_out;
+			
+			-- Conectar a saída do video da Camera de Baixa Resolução com a Thread de tratamento de imagem
+			--video_in_conn: port cam_low_res_in -> this_thread_process_video.video_from_camera;
+			
 			
 			send_pwm_roll_conn: port this_thread_control_servos.Move_Roll_Out -> PWM_Serv_Roll_out;
 			send_pwm_pitch_conn: port this_thread_control_servos.Move_Pitch_Out -> PWM_Serv_Pitch_out;
@@ -117,6 +140,8 @@ public
 			i2c_bus: requires bus access Buses::I2C::I2C;
 			pwm_bus: requires bus access buses::pwm::pwm;
 			usb_bus: requires bus access buses::USB::USB.impl;
+			uart_bus: requires bus access buses::UART::UART.impl;
+			spi_bus: requires bus access buses::SPI::SPI.impl;
 			--Supply_in : requires bus access buses::Misc::V5_bus.impl;
 	end MainProcessor;
 
@@ -133,9 +158,6 @@ public
 -------------------
 	memory Ram
 	end Ram;
-
-	--memory SD_card
-	--end SD_card;
 	
 	bus Connection_Bus
 	end Connection_Bus;
