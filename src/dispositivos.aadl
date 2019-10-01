@@ -77,10 +77,8 @@ public
 --  Unidade Movel Inercial - MPU6050
 ---------------------
 	device MPU6050 extends IMU_generic
-		features
-			DOF: out data port uavcam::tipo_de_dados::Six_Axis.impl;
 		flows
-			f2: flow source DOF {latency => 100us .. 300us;};
+			f2: flow source DOF6 {latency => 100us .. 300us;};
 		properties
 			Dispatch_Protocol => Periodic;
 			Period => 10ms;
