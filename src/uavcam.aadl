@@ -41,7 +41,7 @@ public
 			bus_pwm_conn2: port this_gimbal_control.PWM_Serv_Pitch_out -> this_servo_pitch.PWM_Serv;
 			bus_pwm_conn3: port this_gimbal_control.PWM_Serv_Yaw_out -> this_servo_yaw.PWM_Serv;
 			
-			bus_imu_conn: port this_imu.DOF-> this_gimbal_control.Attitude_in;
+			bus_imu_conn: port this_imu.DOF6-> this_gimbal_control.Attitude_in;
 			
 			bus_cam_conn: port this_camera.cam_stream_out -> this_gimbal_control.camera_stream_in;
 			
