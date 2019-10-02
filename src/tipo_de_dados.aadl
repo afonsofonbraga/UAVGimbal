@@ -30,6 +30,7 @@ with data_model;
 
 	data Six_Axis
 		properties
+			data_size => 12 Bytes;
 	    	data_model::Data_Representation => Array;
 	end Six_Axis;
 	
@@ -71,6 +72,7 @@ with data_model;
 
 	data Target_Position
 		properties
+			data_size => 6 Bytes;
 	    	data_model::Data_Representation => Array;
 	end Target_Position;
 	

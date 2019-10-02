@@ -1,7 +1,9 @@
 package uavcam::threads_file
 public
-
+	
+	with uavcam;
 	with uavcam::tipo_de_dados;
+	with SEI;
 	
 	thread get_radio_command	
 		features
@@ -9,10 +11,10 @@ public
 			Target_Position_Out: out data port uavcam::tipo_de_dados::Target_Position.impl;
 		properties
 		    Dispatch_protocol => periodic;
-		    period => 200 ms;
-		    compute_execution_time => 2 ms .. 2 ms;
+		    period => 200 ms; -- 250ms
+		    compute_execution_time => 2 ms .. 2 ms; -- 25ms
 		    deadline => 200 ms;
-		    priority => 2;
+		    priority => 1;
 		    POSIX_Scheduling_Policy => SCHED_FIFO;	
 	end get_radio_command;
 	
@@ -25,6 +27,13 @@ public
 			Attitude_IMU: in data port uavcam::tipo_de_dados::Six_Axis.impl;
 			Radio_Command_in: in data port uavcam::tipo_de_dados::Target_Position.impl;
 			Move_Servos_Out: out data port uavcam::tipo_de_dados::PWM_Rate_Group.impl;
+		properties
+		    Dispatch_protocol => periodic;
+		    period => 200 ms; -- 250ms
+		    compute_execution_time => 2 ms .. 2 ms; -- 25ms
+		    deadline => 200 ms;
+		    priority => 2;
+		    POSIX_Scheduling_Policy => SCHED_FIFO;	
 	end get_attitude;
 	
 	thread implementation get_attitude.impl	
@@ -41,7 +50,7 @@ public
 		    period => 100 ms;
 		    compute_execution_time => 2 ms .. 2 ms;
 		    deadline => 100 ms;
-		    priority => 2;
+		    priority => 3;
 		    POSIX_Scheduling_Policy => SCHED_FIFO;	
 	end control_servos;	
 	
@@ -56,11 +65,19 @@ public
 	    
 	  properties
 	    Dispatch_protocol => periodic;
-	      period => 1000 ms;
-	      compute_execution_time => 2 ms .. 2 ms;
-	      deadline => 1000 ms;
-	      priority => 2;
+	      --period => 1000 ms;
+	      --compute_execution_time => 2 ms .. 2 ms; -- 25ms
+	      deadline => 1000 ms; -- 250ms;
+	      priority => 4;
 	      POSIX_Scheduling_Policy => SCHED_FIFO;
+	      
+	      	sei::mipsbudget   => 25.0 MIPS;
+			--Dispatch_Protocol => Periodic;
+			Period            => 50ms;
+			compute_execution_time => 10 ms .. 40 ms;
+			reference_processor => classifier (uavcam::MainProcessor);
+			sei::instructionsperdispatch => 1.24 kipd .. 1.25 mipd; 
+	      
 	end process_video;
 	
 	thread implementation process_video.impl	
@@ -69,6 +86,13 @@ public
 	thread health_mgr	
 		features
 			status_to_uav: out data port uavcam::tipo_de_dados::System_Status.impl;	
+		properties
+	    	Dispatch_protocol => periodic;
+	      	period => 1000 ms;
+		    compute_execution_time => 2 ms .. 2 ms; -- 25ms
+		    deadline => 1000 ms; -- 250ms;
+		    priority => 5;
+		    POSIX_Scheduling_Policy => SCHED_FIFO;
 	end health_mgr;
 	
 	thread implementation health_mgr.impl			

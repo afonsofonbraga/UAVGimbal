@@ -78,18 +78,19 @@ public
 ---------------------
 	device MPU6050 extends IMU_generic
 		flows
-			f2: flow source DOF6 {latency => 100us .. 300us;};
+			f_imu: flow source DOF6 {latency => 100us .. 300us;};
 		properties
 			Dispatch_Protocol => Periodic;
 			Period => 10ms;
+			Compute_Execution_Time => 6 ms .. 8 ms;
 	end MPU6050;
 
 	device implementation MPU6050.impl
 	end MPU6050.impl;
 
--------------------	
---     Camera    --
--------------------
+------------
+-- CAMERA --
+------------
 	device camera
 		features
 			Cam_Serial_Wire: requires bus access buses::USB::USB.impl;
@@ -97,7 +98,12 @@ public
 			cam_stream_out: out data port uavcam::tipo_de_dados::Camera_Frame.impl;
 			--Supply: requires bus access buses::misc::V5_Bus.impl;
 			--proc_evt: out event port;
-			
+		flows
+			f_video: flow source cam_stream_out {latency => 100us .. 300us;};
+		properties
+			Dispatch_Protocol => Periodic;
+			Period => 200 ms;
+			Compute_Execution_Time => 20 ms .. 50 ms;
 	end camera;
 
 	device implementation CAMERA.impl
@@ -156,7 +162,7 @@ public
 			store_data_in: in data port uavcam::tipo_de_dados::Store_Data.impl;
 			SD_card_Serial_Wire: requires bus access Buses::SPI::SPI;
 		flows -- Valores arbitr�rios de lat�ncia. Verificar valroes reais.
-			f1_save: flow sink store_data_in {latency => 100us .. 300us;};
+			f_save: flow sink store_data_in {latency => 100us .. 300us;};
 		properties
 			Dispatch_Protocol => Periodic;
 			Period => 10ms; -- Igualar ao per�odo da thread de processamento de imagem
@@ -203,7 +209,7 @@ public
 			PWM_Serv: in data port uavcam::tipo_de_dados::PWM_Rate;
 			pwm_bus: requires bus access buses::pwm::pwm;
 		flows
-			f0: flow sink PWM_Serv {latency => 200us .. 500us;};
+			f0: flow sink PWM_Serv {latency => 200us .. 500us;};  -- num dos exemplos, o servo nao tinha flow. existe tbm flow path
 		properties
 			Dispatch_Protocol => Periodic;
 			Period => 20ms; -- depende da tecnologia do ESC

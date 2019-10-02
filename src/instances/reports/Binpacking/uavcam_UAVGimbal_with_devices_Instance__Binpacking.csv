@@ -1,0 +1,18 @@
+Bind threads to processors Report
+
+Binpacker Analysis Report
+
+Warning! Bus this_bus is missing Transmission Time property. Using default of 1.0E-5
+Warning! Bus this_i2c_bus is missing Transmission Time property. Using default of 1.0E-5
+Warning! Bus this_pwm_bus is missing Transmission Time property. Using default of 1.0E-5
+Warning! Bus this_usb_cam is missing Transmission Time property. Using default of 1.0E-5
+Warning! Bus this_uart_bus is missing Transmission Time property. Using default of 1.0E-5
+Warning! Bus this_spi_bus is missing Transmission Time property. Using default of 1.0E-5
+Warning! Data size of connection source port this_camera.cam_stream_out not specified
+Warning! Data size of connection source port this_gimbal_control.store_data_out not specified
+Warning! Data size of connection source port this_gimbal_control.cam_low_res_out not specified
+Warning! Data size of connection source port this_gimbal_control.sys_status_out not specified
+
+Binpacking results: Success
+
+Thread to Processor Bindings
