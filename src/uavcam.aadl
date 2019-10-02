@@ -1,6 +1,7 @@
 package uavcam
 public
 	--with Electricity_Properties;
+	with SEI;
 	with uavcam::dispositivos;
 
 	with uavcam::tipo_de_dados;
@@ -82,6 +83,8 @@ public
 			
 		--properties
     		--Concurrency_Control_Protocol => Priority_Ceiling applies to uavcam::threads_file::receive_radio;
+    	--properties
+  			--Actual_Processor_Binding => (reference(MainProcessor)) applies to process1;
 	end UAVGimbal.with_devices;
 
 -------------
@@ -129,6 +132,10 @@ public
 			send_pwm_roll_conn: port this_thread_control_servos.Move_Roll_Out -> PWM_Serv_Roll_out;
 			send_pwm_pitch_conn: port this_thread_control_servos.Move_Pitch_Out -> PWM_Serv_Pitch_out;
 			send_pwm_yaw_conn: port this_thread_control_servos.Move_Yaw_Out -> PWM_Serv_Yaw_out;
+			
+			-- flow example
+			-- flows
+				-- f0: flow path obstacle_distance -> c0_port -> thr.f0 -> c1 -> obstacle_detected;
 	end gimbal_control.with_threads;
 
 ---------------
@@ -150,7 +157,11 @@ public
 			this_ram: memory Ram;
 			--this_sd_card: memory SD_card;
 		properties
-    		Scheduling_Protocol => (POSIX_1003_HIGHEST_PRIORITY_FIRST_PROTOCOL);		
+			SEI::MIPSCapacity => 50.0 MIPS; 
+    		Scheduling_Protocol => (POSIX_1003_HIGHEST_PRIORITY_FIRST_PROTOCOL);	
+    		
+    		-- 50 MIPS (million instructions per second)
+    			
 	end MainProcessor.impl;
 
 -------------------
@@ -159,10 +170,35 @@ public
 	memory Ram
 	end Ram;
 	
+-----------
+-- Buses --
+-----------
 	bus Connection_Bus
 	end Connection_Bus;
 
 	bus implementation Connection_Bus.impl
+		-- bandwidth: 500 kbps
+		-- acquisition time: 10 to 30 ms
+		-- transmission time: 1 to 10 us
 	end Connection_Bus.impl;
+	
+	-- The band width is defined in the library.
+	
+	-- example
+	--bus can
+		--properties
+			--Latency => 1 Ms .. 1 Ms;
+			--SEI::BandWidthCapacity => 500000.0 bitsps;
+			--Transmission_Time => [Fixed => 10 ms .. 30 ms;
+				--					PerByte => 1 us .. 10 us;];
+	--end can;
+	
+	--bus rs232
+		--properties
+			--Latency => 1 Ms .. 1 Ms;
+			--SEI::BandWidthCapacity => 5.0 KBytesps; 
+			--Transmission_Time => [ Fixed => 200 ms .. 500ms;
+		                          --PerByte => 2 ms .. 5 ms; ];
+		--end rs232;
 
 end uavcam;

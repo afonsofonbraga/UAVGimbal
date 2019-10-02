@@ -1,0 +1,28 @@
+Resource Budget Analysis Report
+
+Resource Summary: 
+  MIPS capacity 50.000 MIPS : MIPS budget 0.000 MIPS
+  1 out of 1 with MIPS capacity
+*   0 out of 1 with MIPS budget
+
+
+
+Detailed Processor MIPS Capacity Report 
+
+Component,Capacity
+processor this_processor, 50.000 MIPS,
+Total, 50.000 MIPS,
+
+
+Detailed MIPS Budget Report 
+
+Component,Budget,Actual,Notes
+device this_servo_roll, 0.000 MIPS,0.000 MIPS,
+device this_servo_pitch, 0.000 MIPS,0.000 MIPS,
+device this_servo_yaw, 0.000 MIPS,0.000 MIPS,
+device this_imu, 0.000 MIPS,0.000 MIPS,
+device this_camera, 0.000 MIPS,0.000 MIPS,
+device this_sd_card, 0.000 MIPS,0.000 MIPS,
+device this_UAV, 0.000 MIPS,0.000 MIPS,
+process this_gimbal_control, 0.000 MIPS,0.000 MIPS,
+Total, ,0.000 MIPS,
