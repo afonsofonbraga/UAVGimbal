@@ -1,0 +1,166 @@
+package devices_hw
+public
+	
+	with uav_data;
+	with buses::USB;	
+	with buses::I2C;	
+	with buses::pwm;
+	with Buses::UART;	
+	with buses::SPI;
+	
+---------------------
+--  Inertial Unit - MPU6050
+---------------------
+	device IMU_generic
+		features
+			DOF6: out data port uav_data::Six_Axis.impl;
+			--i2c_bus: requires bus access Buses::I2c::I2C;
+			i2c_bus: requires bus access I2C;
+	end IMU_generic;
+
+---------------------
+--  Inertial Unit - MPU6050
+---------------------
+	device MPU6050 extends IMU_generic
+		flows
+			f_imu: flow source DOF6 {latency => 100us .. 300us;};
+		properties
+			Dispatch_Protocol => Periodic;
+			Period => 10ms;
+			Compute_Execution_Time => 6 ms .. 8 ms;
+	end MPU6050;
+
+	device implementation MPU6050.impl
+	end MPU6050.impl;
+
+------------
+-- CAMERA --
+------------
+	device camera
+		features
+			Cam_Serial_Wire: requires bus access USB;			
+			cam_stream_out: out data port uav_data::Camera_Frame.impl;
+		flows
+			f_video: flow source cam_stream_out {latency => 100us .. 300us;};
+		properties
+			Dispatch_Protocol => Periodic;
+			Period => 200 ms;
+			Compute_Execution_Time => 2 ms .. 5 ms;
+	end camera;
+
+	device implementation CAMERA.impl
+	end CAMERA.impl;
+
+	abstract CAMERA_Driver
+	end CAMERA_Driver;
+
+	abstract implementation CAMERA_Driver.impl
+	end CAMERA_Driver.impl;
+
+-------------
+-- SD Card --
+-------------
+	device sd_card
+		features
+			store_data_in: in data port uav_data::Store_Data.impl;
+			SD_card_Serial_Wire: requires bus access SPI;
+		flows
+			f_save: flow sink store_data_in {latency => 100us .. 300us;};
+		properties
+			Dispatch_Protocol => Periodic;
+			Period => 10ms; 
+	end SD_card;
+
+	device implementation SD_card.impl
+	end SD_card.impl;
+
+--------------------	
+-- UAV controller --
+--------------------
+	device UAV
+		features
+			UAV_Serial_Wire: requires bus access UART;
+			radio_controller: out data port uav_data::Target_Position.impl;
+			cam_low_res: in data port uav_data::Camera_Low_Res.impl;
+			sys_status: in data port uav_data::System_Status.impl;						
+		flows 
+			f1_radio: flow source radio_controller {latency => 100us .. 300us;};
+			f2_cam: flow sink cam_low_res {latency => 100us .. 300us;};
+			f3_sys_status: flow sink sys_status {latency => 100us .. 300us;};
+		properties
+			Dispatch_Protocol => Periodic;
+			Period => 10ms;
+	end UAV;
+
+	device implementation UAV.impl
+	end UAV.impl;
+
+
+-------------------	
+--  Servo Motors --
+-------------------
+	device Servo_Motor
+		features
+			PWM_Serv: in data port uav_data::PWM_Rate;
+			pwm_bus: requires bus access pwm;
+		flows
+			f0: flow sink PWM_Serv {latency => 200us .. 500us;}; 
+		properties
+			Dispatch_Protocol => Periodic;
+			Period => 20ms; 
+	end Servo_Motor;
+
+	device implementation Servo_Motor.impl
+	end Servo_Motor.impl;
+
+	
+-----------
+-- Buses --
+-----------
+	bus mem_bus
+	end mem_bus;
+
+	bus implementation mem_bus.impl
+	end mem_bus.impl;
+	
+	
+	bus I2C extends BUSES::I2C::I2C 
+		properties
+			Latency => 1 Ms .. 1 Ms;
+			Transmission_Time => [Fixed => 10 ms .. 30 ms;
+						PerByte => 1 us .. 10 us;];
+	end I2C;	
+
+	bus USB extends BUSES::USB::USB 
+		properties
+			Latency => 1 Ms .. 1 Ms;
+			Transmission_Time => [Fixed => 10 ms .. 30 ms;
+						PerByte => 1 us .. 10 us;];
+	end USB;				
+
+	bus PWM extends BUSES::PWM::PWM 
+		properties
+			Latency => 1 Ms .. 1 Ms;
+			Transmission_Time => [Fixed => 10 ms .. 30 ms;
+						PerByte => 1 us .. 10 us;];
+	end PWM;	
+
+	bus UART extends BUSES::UART::UART 
+		properties
+			Latency => 1 Ms .. 1 Ms;
+			Transmission_Time => [Fixed => 10 ms .. 30 ms;
+						PerByte => 1 us .. 10 us;];
+	end UART;	
+
+	bus SPI extends BUSES::SPI::SPI 
+		properties
+			Latency => 1 Ms .. 1 Ms;
+			Transmission_Time => [Fixed => 10 ms .. 30 ms;
+						PerByte => 1 us .. 10 us;];
+	end SPI;
+
+end devices_hw;
+
+
+
+

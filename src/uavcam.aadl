@@ -1,204 +1,153 @@
-package uavcam
+package uavcam_pkg
 public
-	--with Electricity_Properties;
-	with SEI;
-	with uavcam::dispositivos;
 
-	with uavcam::tipo_de_dados;
-	with uavcam::threads_file;
+with devices_hw;
+with threads_file;
+with uav_data;
 
-    with Buses::I2C;
-    with buses::pwm;
-	--with buses::misc;
-	with buses::USB;
-	with Buses::UART;
-	with Buses::SPI;
-------------
--- System --
-------------
-	system UAVGimbal
-	end UAVGimbal;
-
-	system implementation UAVGimbal.with_devices
-		subcomponents
-			this_servo_roll: device uavcam::dispositivos::Servo_Motor.impl;
-			this_servo_pitch: device uavcam::dispositivos::Servo_Motor.impl;
-			this_servo_yaw: device uavcam::dispositivos::Servo_Motor.impl;
-			this_imu: device uavcam::dispositivos::MPU6050;
-			this_camera: device uavcam::dispositivos::camera;
-			this_sd_card: device uavcam::dispositivos::SD_card;
-			this_UAV: device uavcam::dispositivos::UAV;
-			this_gimbal_control: process gimbal_control;
-			this_processor: processor MainProcessor.impl;
-			this_bus: bus Connection_Bus.impl;
-			this_i2c_bus: bus BUSES::I2C::I2C;
-			this_pwm_bus: bus buses::pwm::pwm;
-			this_usb_cam: bus buses::USB::USB;
-			this_uart_bus: bus Buses::UART::UART;
-			this_spi_bus: bus Buses::SPI::SPI;
-		connections
-			-- ports
-			bus_pwm_conn1: port this_gimbal_control.PWM_Serv_Roll_out -> this_servo_roll.PWM_Serv;
-			bus_pwm_conn2: port this_gimbal_control.PWM_Serv_Pitch_out -> this_servo_pitch.PWM_Serv;
-			bus_pwm_conn3: port this_gimbal_control.PWM_Serv_Yaw_out -> this_servo_yaw.PWM_Serv;
-			
-			bus_imu_conn: port this_imu.DOF6-> this_gimbal_control.Attitude_in;
-			
-			bus_cam_conn: port this_camera.cam_stream_out -> this_gimbal_control.camera_stream_in;
-			
-			sd_card_conn: port this_gimbal_control.store_data_out -> this_sd_card.store_data_in;
-			
-			uav_radio_conn: port this_UAV.radio_controller -> this_gimbal_control.radio_controller_in;
-			uav_cam_conn: port this_gimbal_control.cam_low_res_out -> this_UAV.cam_low_res;
-			uav_status_conn: port this_gimbal_control.sys_status_out -> this_UAV.sys_status;
-			
-			-- buses
-			
-			-- Processor to memory
-			bus_processor: bus access this_bus -> this_processor.bus_access;
-			
-			
-			-- Processor to bus
-			bus_processor_i2c: bus access this_i2c_bus <-> this_processor.i2c_bus;
-			bus_processor_pwm: bus access this_pwm_bus -> this_processor.pwm_bus;
-			bus_processor_usb: bus access this_usb_cam <-> this_processor.usb_bus;			
-			bus_processor_uart: bus access this_uart_bus <-> this_processor.uart_bus;
-			bus_processor_spi_bus: bus access this_spi_bus <-> this_processor.spi_bus;
-			
-			
-			-- Bus to devices
-			bus_imu: bus access this_i2c_bus <-> this_imu.i2c_bus;
-			bus_servo_roll: bus access this_pwm_bus -> this_servo_roll.pwm_bus;
-			bus_servo_pitch: bus access this_pwm_bus -> this_servo_pitch.pwm_bus;
-			bus_servo_yaw: bus access this_pwm_bus -> this_servo_yaw.pwm_bus;
-			bus_camera: bus access this_usb_cam <-> this_camera.Cam_Serial_Wire;
-			bus_uav: bus access this_uart_bus <-> this_uav.UAV_Serial_Wire;
-			bus_sd_card: bus access this_spi_bus <-> this_sd_card.SD_card_Serial_Wire;
-			
-			-- Power supply bus
-			--bus_processor_usb_sup: bus access this_usb_sup -> this_processor.Supply_in;
-			
-			-- Alimentação 5V
-			--bus_sup_cam: bus access this_usb_sup -> this_camera.Supply;
-			
-		--properties
-    		--Concurrency_Control_Protocol => Priority_Ceiling applies to uavcam::threads_file::receive_radio;
-    	--properties
-  			--Actual_Processor_Binding => (reference(MainProcessor)) applies to process1;
-	end UAVGimbal.with_devices;
-
--------------
--- Process --
--------------
-	process gimbal_control
-		features
-			PWM_Serv_Roll_out: out data port uavcam::tipo_de_dados::PWM_Rate;
-			PWM_Serv_Pitch_out: out data port uavcam::tipo_de_dados::PWM_Rate;
-			PWM_Serv_Yaw_out: out data port uavcam::tipo_de_dados::PWM_Rate;
-			
-			Attitude_in: in data port uavcam::tipo_de_dados::Six_Axis.impl;
-			
-			camera_stream_in: in data port uavcam::tipo_de_dados::Camera_Frame.impl;
-			
-			store_data_out: out data port uavcam::tipo_de_dados::Store_Data.impl;			
-			
-			radio_controller_in: in data port uavcam::tipo_de_dados::Target_Position.impl;
-			cam_low_res_out: out data port uavcam::tipo_de_dados::Camera_Low_Res.impl;
-			sys_status_out: out data port uavcam::tipo_de_dados::System_Status.impl;
-						
-	end gimbal_control;
-
-	process implementation gimbal_control.with_threads
-		subcomponents
-			this_thread_radio_command: thread uavcam::threads_file::get_radio_command;
-			this_thread_attitude: thread uavcam::threads_file::get_attitude;
-			this_thread_control_servos: thread uavcam::threads_file::control_servos;
-			this_thread_process_video: thread uavcam::threads_file::process_video;
-			this_thread_health_mgr: thread uavcam::threads_file::health_mgr;
-		connections
-			radio_command_thread_conn: port radio_controller_in -> this_thread_radio_command.Target_Position_in;
-			attitude_in_conn: port Attitude_in -> this_thread_attitude.Attitude_IMU;
-			command_conn: port this_thread_radio_command.Target_Position_Out -> this_thread_attitude.Radio_Command_in;
-			movement_conn: port this_thread_attitude.Move_Servos_Out -> this_thread_control_servos.Move_Servos_In;
-			cam_stream_conn: port camera_stream_in -> this_thread_process_video.video_from_camera;
-			store_video_conn: port this_thread_process_video.video_to_sd_card -> store_data_out;
-			send_video_conn: port this_thread_process_video.video_to_uav -> cam_low_res_out;
-			send_status_conn: port this_thread_health_mgr.status_to_uav -> sys_status_out;
-			
-			-- Conectar a saída do video da Camera de Baixa Resolução com a Thread de tratamento de imagem
-			--video_in_conn: port cam_low_res_in -> this_thread_process_video.video_from_camera;
-			
-			
-			send_pwm_roll_conn: port this_thread_control_servos.Move_Roll_Out -> PWM_Serv_Roll_out;
-			send_pwm_pitch_conn: port this_thread_control_servos.Move_Pitch_Out -> PWM_Serv_Pitch_out;
-			send_pwm_yaw_conn: port this_thread_control_servos.Move_Yaw_Out -> PWM_Serv_Yaw_out;
-			
-			-- flow example
-			-- flows
-				-- f0: flow path obstacle_distance -> c0_port -> thr.f0 -> c1 -> obstacle_detected;
-	end gimbal_control.with_threads;
-
----------------
--- Processor --
----------------
-	processor MainProcessor
-		features
-			bus_access: requires bus access uavcam::Connection_Bus;
-			i2c_bus: requires bus access Buses::I2C::I2C;
-			pwm_bus: requires bus access buses::pwm::pwm;
-			usb_bus: requires bus access buses::USB::USB.impl;
-			uart_bus: requires bus access buses::UART::UART.impl;
-			spi_bus: requires bus access buses::SPI::SPI.impl;
-			--Supply_in : requires bus access buses::Misc::V5_bus.impl;
-	end MainProcessor;
-
-	processor implementation MainProcessor.impl
-		subcomponents
-			this_ram: memory Ram;
-			--this_sd_card: memory SD_card;
-		properties
-			SEI::MIPSCapacity => 50.0 MIPS; 
-    		Scheduling_Protocol => (POSIX_1003_HIGHEST_PRIORITY_FIRST_PROTOCOL);	
-    		
-    		-- 50 MIPS (million instructions per second)
-    			
-	end MainProcessor.impl;
-
--------------------
--- Shared Memory --
--------------------
-	memory Ram
-	end Ram;
-	
------------
--- Buses --
------------
-	bus Connection_Bus
-	end Connection_Bus;
-
-	bus implementation Connection_Bus.impl
-		-- bandwidth: 500 kbps
-		-- acquisition time: 10 to 30 ms
-		-- transmission time: 1 to 10 us
-	end Connection_Bus.impl;
-	
-	-- The band width is defined in the library.
-	
-	-- example
-	--bus can
-		--properties
-			--Latency => 1 Ms .. 1 Ms;
-			--SEI::BandWidthCapacity => 500000.0 bitsps;
-			--Transmission_Time => [Fixed => 10 ms .. 30 ms;
-				--					PerByte => 1 us .. 10 us;];
-	--end can;
-	
-	--bus rs232
-		--properties
-			--Latency => 1 Ms .. 1 Ms;
-			--SEI::BandWidthCapacity => 5.0 KBytesps; 
-			--Transmission_Time => [ Fixed => 200 ms .. 500ms;
-		                          --PerByte => 2 ms .. 5 ms; ];
-		--end rs232;
-
+system uavcam
 end uavcam;
+
+system implementation uavcam.i
+	subcomponents
+		cpu: processor cpu.i;
+		sw: process sw.i;
+		ram: memory ram;
+		mem_bus: bus devices_hw::mem_bus;
+		
+		servo_roll: device devices_hw::Servo_Motor.impl;
+		servo_pitch: device devices_hw::Servo_Motor.impl;
+		servo_yaw: device devices_hw::Servo_Motor.impl;
+		imu: device devices_hw::MPU6050;
+		camera: device devices_hw::camera;
+		sd_card: device devices_hw::sd_card;
+		uav: device devices_hw::UAV;
+
+		i2c_bus: bus devices_hw::I2C;
+		pwm_bus: bus devices_hw::pwm;
+		usb_cam: bus devices_hw::USB;
+		uart_bus: bus devices_hw::UART;
+		spi_bus: bus devices_hw::SPI;
+
+	connections
+		-- ports
+		bus_pwm_conn1: port sw.PWM_Serv_Roll_out -> servo_roll.PWM_Serv;
+		bus_pwm_conn2: port sw.PWM_Serv_Pitch_out -> servo_pitch.PWM_Serv;
+		bus_pwm_conn3: port sw.PWM_Serv_Yaw_out -> servo_yaw.PWM_Serv;
+			
+		bus_imu_conn: port imu.DOF6 -> sw.Attitude_in;
+			
+		bus_cam_conn: port camera.cam_stream_out -> sw.camera_stream_in;
+			
+		sd_card_conn: port sw.store_data_out -> sd_card.store_data_in;
+			
+		uav_radio_conn: port uav.radio_controller -> sw.radio_controller_in;
+		uav_cam_conn: port sw.cam_low_res_out -> uav.cam_low_res;
+		uav_status_conn: port sw.sys_status_out -> uav.sys_status;
+			
+		-- buses
+			
+		-- Processor to memory
+		bus_cpu: bus access mem_bus -> cpu.bus_access;
+			
+			
+		-- Processor to bus
+		bus_cpu_i2c: bus access i2c_bus <-> cpu.i2c_bus;
+		bus_cpu_pwm: bus access pwm_bus -> cpu.pwm_bus;
+		bus_cpu_usb: bus access usb_cam <-> cpu.usb_bus;			
+		bus_cpu_uart: bus access uart_bus <-> cpu.uart_bus;
+		bus_cpu_spi_bus: bus access spi_bus <-> cpu.spi_bus;
+			
+			
+		-- Bus to devices
+		
+		bus_imu: bus access i2c_bus <-> imu.i2c_bus;
+		bus_servo_roll: bus access pwm_bus -> servo_roll.pwm_bus;
+		bus_servo_pitch: bus access pwm_bus -> servo_pitch.pwm_bus;
+		bus_servo_yaw: bus access pwm_bus -> servo_yaw.pwm_bus;
+		bus_camera: bus access usb_cam <-> camera.Cam_Serial_Wire;
+		bus_uav: bus access uart_bus <-> uav.UAV_Serial_Wire;
+		bus_sd_card: bus access spi_bus <-> sd_card.SD_card_Serial_Wire;
+		
+	flows
+		f_sys_cam: end to end flow camera.f_video -> bus_cam_conn -> sw.f_sw_cam -> sd_card_conn -> sd_card.f_save;
+	properties
+		Actual_Processor_Binding => (REFERENCE(cpu)) APPLIES TO sw;
+		Actual_Memory_Binding => (REFERENCE(ram)) APPLIES TO sw;
+  	
+end uavcam.i;
+
+processor cpu --leon2
+	features
+		bus_access: requires bus access devices_hw::mem_bus;
+		i2c_bus: requires bus access devices_hw::I2C;
+		pwm_bus: requires bus access devices_hw::pwm;
+		usb_bus: requires bus access devices_hw::USB;
+		uart_bus: requires bus access devices_hw::UART;
+		spi_bus: requires bus access devices_hw::SPI;
+	properties
+  		Clock_Period => 1 ns;
+  		Scheduling_Protocol => (POSIX_1003_HIGHEST_PRIORITY_FIRST_PROTOCOL);
+  		Priority_Range => 0 .. 255;
+  		Preemptive_Scheduler => true;
+end cpu;
+
+processor implementation cpu.i
+end cpu.i;
+
+memory ram
+end ram;
+
+process sw
+	features
+		PWM_Serv_Roll_out: out data port uav_data::PWM_Rate;
+		PWM_Serv_Pitch_out: out data port uav_data::PWM_Rate;
+		PWM_Serv_Yaw_out: out data port uav_data::PWM_Rate;
+			
+		Attitude_in: in data port uav_data::Six_Axis.impl;
+			
+		camera_stream_in: in data port uav_data::Camera_Frame.impl;
+			
+		store_data_out: out data port uav_data::Store_Data.impl;			
+			
+		radio_controller_in: in data port uav_data::Target_Position.impl;
+		cam_low_res_out: out data port uav_data::Camera_Low_Res.impl;
+		sys_status_out: out data port uav_data::System_Status.impl;	
+	flows
+		f_sw_cam: flow path camera_stream_in -> store_data_out;
+end sw;
+
+process implementation sw.i
+	subcomponents
+		thread_get_attitude: thread threads_file::get_attitude;
+		thread_control_servos: thread threads_file::control_servos;
+		thread_process_video: thread threads_file::process_video;
+		thread_health_mgr: thread threads_file::health_mgr;
+	connections
+		attitude_in_conn: port Attitude_in -> thread_get_attitude.Attitude_IMU;
+		command_conn: port radio_controller_in -> thread_get_attitude.Radio_Command_in;
+		
+		movement_conn: port thread_get_attitude.Move_Servos_Out -> thread_control_servos.Move_Servos_In;
+		
+		cam_stream_conn: port camera_stream_in -> thread_process_video.video_from_camera;
+		store_video_conn: port thread_process_video.video_to_sd_card -> store_data_out;
+		send_video_conn: port thread_process_video.video_to_uav -> cam_low_res_out;
+		
+		get_attitude_status: port thread_get_attitude.health -> thread_health_mgr.attitude;
+		get_video_status: port thread_process_video.health -> thread_health_mgr.video;
+		get_servos_status: port thread_control_servos.health -> thread_health_mgr.servos;
+		send_status_conn: port thread_health_mgr.status_to_uav -> sys_status_out;
+		
+		roll_conn: port thread_control_servos.Move_Roll_Out -> PWM_Serv_Roll_out;
+		pitch_conn: port thread_control_servos.Move_Pitch_Out -> PWM_Serv_Pitch_out;
+		yaw_conn: port thread_control_servos.Move_Yaw_Out -> PWM_Serv_Yaw_out;
+	
+	flows
+		f_sw_cam: flow path camera_stream_in -> cam_stream_conn -> thread_process_video.video_flow -> store_video_conn -> store_data_out;
+end sw.i;
+
+end uavcam_pkg;
+
+
+
+

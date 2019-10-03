@@ -1,0 +1,730 @@
+<?xml version="1.0" encoding="ASCII"?>
+<diagram:Diagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:diagram="http://osate.org/diagram" formatVersion="7">
+  <element uuid="3d00caef-e1a2-4243-bc3b-fdc601e92fdb" manual="true">
+    <element uuid="86140bda-3989-40db-becd-e58c6253295d" manual="true">
+      <element uuid="7b2e5d2b-99f7-48f6-9497-e9fc2dc7718e" manual="true">
+        <bo>
+          <seg>tag</seg>
+          <seg>unidirectional</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>connection</seg>
+        <seg>bus_cam_conn</seg>
+      </bo>
+      <bendpoints>
+        <point x="610.0" y="159.33333333333326"/>
+        <point x="610.0" y="781.6666666666667"/>
+      </bendpoints>
+    </element>
+    <element uuid="577cac2f-f189-4372-bd58-f8491924261a" manual="true">
+      <bo>
+        <seg>connection</seg>
+        <seg>bus_camera</seg>
+      </bo>
+      <bendpoints>
+        <point x="240.0" y="159.3333333333332"/>
+      </bendpoints>
+    </element>
+    <element uuid="0a3d4ddc-c287-4496-b728-8f22d60b9f0d" manual="true">
+      <element uuid="97627012-7a4b-4bde-9ee7-5e7cb0986068" manual="true">
+        <bo>
+          <seg>tag</seg>
+          <seg>unidirectional</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>connection</seg>
+        <seg>bus_cpu</seg>
+      </bo>
+      <bendpoints>
+        <point x="991.0" y="79.83333333333326"/>
+        <point x="997.0" y="79.83333333333326"/>
+        <point x="997.0" y="90.0"/>
+      </bendpoints>
+    </element>
+    <element uuid="49483b7f-643c-47a8-bffa-7e35dbe10aac" manual="true">
+      <bo>
+        <seg>connection</seg>
+        <seg>bus_cpu_i2c</seg>
+      </bo>
+      <bendpoints>
+        <point x="244.0" y="900.6666666666666"/>
+        <point x="250.0" y="900.6666666666667"/>
+        <point x="250.0" y="187.33333333333326"/>
+        <point x="997.0" y="187.33333333333326"/>
+        <point x="997.0" y="188.0"/>
+      </bendpoints>
+    </element>
+    <element uuid="24ce9095-751d-4a46-a888-c13c1bda3e49" manual="true">
+      <element uuid="10de50b0-cf8f-4c4b-a876-77fb8da73c96" manual="true">
+        <bo>
+          <seg>tag</seg>
+          <seg>unidirectional</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>connection</seg>
+        <seg>bus_cpu_pwm</seg>
+      </bo>
+      <bendpoints>
+        <point x="991.0" y="263.33333333333326"/>
+        <point x="1077.0" y="263.33333333333326"/>
+        <point x="1077.0" y="286.0"/>
+      </bendpoints>
+    </element>
+    <element uuid="a4715a44-a922-4070-9deb-5a5b122faf79" manual="true">
+      <bo>
+        <seg>connection</seg>
+        <seg>bus_cpu_spi_bus</seg>
+      </bo>
+      <bendpoints>
+        <point x="991.0" y="209.99999999999991"/>
+        <point x="1077.0" y="209.9999999999999"/>
+        <point x="1077.0" y="237.0"/>
+      </bendpoints>
+    </element>
+    <element uuid="88a9e9ae-3b7f-452c-a675-57eb61cdbfb3" manual="true">
+      <bo>
+        <seg>connection</seg>
+        <seg>bus_cpu_uart</seg>
+      </bo>
+      <bendpoints>
+        <point x="987.0" y="334.99999999999994"/>
+      </bendpoints>
+    </element>
+    <element uuid="a8c0b732-7639-4404-b6d7-78ff9b78347d" manual="true">
+      <bo>
+        <seg>connection</seg>
+        <seg>bus_cpu_usb</seg>
+      </bo>
+      <bendpoints>
+        <point x="244.0" y="147.66666666666654"/>
+        <point x="250.0" y="147.66666666666652"/>
+        <point x="250.0" y="107.33333333333326"/>
+        <point x="997.0" y="107.33333333333326"/>
+        <point x="997.0" y="139.0"/>
+      </bendpoints>
+    </element>
+    <element uuid="ccaa2bf8-53e1-41b4-9b17-7b85b0f54649" manual="true">
+      <bo>
+        <seg>connection</seg>
+        <seg>bus_imu</seg>
+      </bo>
+      <bendpoints>
+        <point x="240.0" y="912.3333333333334"/>
+      </bendpoints>
+    </element>
+    <element uuid="d3c1331a-53dc-416b-b506-f7f5c20789e1" manual="true">
+      <element uuid="d9bd8929-d88e-41dd-ba52-3a3781175f1f" manual="true">
+        <bo>
+          <seg>tag</seg>
+          <seg>unidirectional</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>connection</seg>
+        <seg>bus_imu_conn</seg>
+      </bo>
+    </element>
+    <element uuid="de6d6348-7fa3-4a56-84c4-29ba36331217" manual="true">
+      <element uuid="a034c10d-4b47-4d8c-a2b5-a5288a51b685" manual="true">
+        <bo>
+          <seg>tag</seg>
+          <seg>unidirectional</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>connection</seg>
+        <seg>bus_pwm_conn1</seg>
+      </bo>
+      <bendpoints>
+        <point x="1007.0" y="749.0"/>
+        <point x="1007.0" y="591.0"/>
+      </bendpoints>
+    </element>
+    <element uuid="460d6e8e-c3a4-4970-bd2e-3a1bb68cb406" manual="true">
+      <element uuid="ae767cbe-f036-44ab-8175-cb0b45bfc1c4" manual="true">
+        <bo>
+          <seg>tag</seg>
+          <seg>unidirectional</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>connection</seg>
+        <seg>bus_pwm_conn2</seg>
+      </bo>
+    </element>
+    <element uuid="140b180d-47e9-44f5-a525-25f0d0f06776" manual="true">
+      <element uuid="9450058d-70cc-4e3c-860f-224379cbbf78" manual="true">
+        <bo>
+          <seg>tag</seg>
+          <seg>unidirectional</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>connection</seg>
+        <seg>bus_pwm_conn3</seg>
+      </bo>
+      <bendpoints>
+        <point x="1017.0" y="798.0"/>
+        <point x="1017.0" y="719.0"/>
+      </bendpoints>
+    </element>
+    <element uuid="dab53d6d-3463-4b24-b3e8-8615fe3ba6d4" manual="true">
+      <bo>
+        <seg>connection</seg>
+        <seg>bus_sd_card</seg>
+      </bo>
+      <bendpoints>
+        <point x="991.0" y="221.6666666666666"/>
+        <point x="1067.0" y="221.66666666666663"/>
+        <point x="1067.0" y="414.0"/>
+      </bendpoints>
+    </element>
+    <element uuid="9e83fb2f-8609-4c76-8933-30b759c4eb6b" manual="true">
+      <element uuid="7c2e6deb-e7d0-46e3-a544-ceb2a3cce5b9" manual="true">
+        <bo>
+          <seg>tag</seg>
+          <seg>unidirectional</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>connection</seg>
+        <seg>bus_servo_pitch</seg>
+      </bo>
+      <bendpoints>
+        <point x="991.0" y="293.33333333333326"/>
+        <point x="1037.0" y="293.33333333333326"/>
+        <point x="1037.0" y="798.0"/>
+      </bendpoints>
+    </element>
+    <element uuid="73fe825b-4bf2-4de8-be2f-707d70576240" manual="true">
+      <element uuid="b03d2d7d-8662-46a5-ab2e-c15ce227d011" manual="true">
+        <bo>
+          <seg>tag</seg>
+          <seg>unidirectional</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>connection</seg>
+        <seg>bus_servo_roll</seg>
+      </bo>
+      <bendpoints>
+        <point x="991.0" y="273.33333333333326"/>
+        <point x="1057.0" y="273.33333333333326"/>
+        <point x="1057.0" y="542.0"/>
+      </bendpoints>
+    </element>
+    <element uuid="2f553737-72c5-489f-809e-587b677b4f19" manual="true">
+      <element uuid="b5d01987-afd3-47a6-b574-ed4c3eab3bc2" manual="true">
+        <bo>
+          <seg>tag</seg>
+          <seg>unidirectional</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>connection</seg>
+        <seg>bus_servo_yaw</seg>
+      </bo>
+      <bendpoints>
+        <point x="991.0" y="283.33333333333326"/>
+        <point x="1047.0" y="283.33333333333326"/>
+        <point x="1047.0" y="670.0"/>
+      </bendpoints>
+    </element>
+    <element uuid="98b7d096-0d6a-498a-8116-a94815afa095" manual="true">
+      <bo>
+        <seg>connection</seg>
+        <seg>bus_uav</seg>
+      </bo>
+      <bendpoints>
+        <point x="991.0" y="346.6666666666666"/>
+        <point x="1027.0" y="346.66666666666663"/>
+        <point x="1027.0" y="926.0"/>
+      </bendpoints>
+    </element>
+    <element uuid="ac63fdcd-8319-47c3-acce-c6582dbd4ac8" manual="true">
+      <element uuid="144752d8-e402-4735-86b8-ff275e4d9c03" manual="true">
+        <bo>
+          <seg>tag</seg>
+          <seg>unidirectional</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>connection</seg>
+        <seg>sd_card_conn</seg>
+      </bo>
+      <bendpoints>
+        <point x="997.0" y="700.0"/>
+        <point x="997.0" y="463.0"/>
+      </bendpoints>
+    </element>
+    <element uuid="0e13f7dc-e19f-4161-a2bf-1e1c10fecfe4" manual="true">
+      <element uuid="4979ed59-021e-4335-8f3f-cae4e35e2281" manual="true">
+        <bo>
+          <seg>tag</seg>
+          <seg>unidirectional</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>connection</seg>
+        <seg>uav_cam_conn</seg>
+      </bo>
+      <bendpoints>
+        <point x="1007.0" y="945.0"/>
+        <point x="1007.0" y="1024.0"/>
+      </bendpoints>
+    </element>
+    <element uuid="8e4c2025-d6fc-4528-92b0-1172c4f6e204" manual="true">
+      <element uuid="f39704b9-0bb4-4a66-a764-a3769bc04028" manual="true">
+        <bo>
+          <seg>tag</seg>
+          <seg>unidirectional</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>connection</seg>
+        <seg>uav_radio_conn</seg>
+      </bo>
+      <bendpoints>
+        <point x="1017.0" y="975.0"/>
+        <point x="1017.0" y="896.0"/>
+      </bendpoints>
+    </element>
+    <element uuid="1d76a927-085e-4cf8-9012-cab4fdee7dcd" manual="true">
+      <element uuid="b6d5d661-3962-4289-ac1b-f5ddfd45974c" manual="true">
+        <bo>
+          <seg>tag</seg>
+          <seg>unidirectional</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>connection</seg>
+        <seg>uav_status_conn</seg>
+      </bo>
+      <bendpoints>
+        <point x="997.0" y="994.0"/>
+        <point x="997.0" y="1073.0"/>
+      </bendpoints>
+    </element>
+    <element uuid="771a8347-182d-4b32-84aa-89057e2f04a7" manual="true">
+      <element uuid="e1d8e0e0-80dd-4301-8050-ee658075cf8f" manual="true" dockArea="left">
+        <bo>
+          <seg>feature</seg>
+          <seg>cam_serial_wire</seg>
+        </bo>
+        <position y="10.0"/>
+      </element>
+      <element uuid="c51317b2-a295-411d-a145-1e24612e78e7" manual="true" dockArea="right">
+        <bo>
+          <seg>feature</seg>
+          <seg>cam_stream_out</seg>
+        </bo>
+        <position x="224.0" y="10.0"/>
+      </element>
+      <element uuid="2c77216c-4443-4d16-b907-6414033b9228" manual="true">
+        <bo>
+          <seg>flow_specification</seg>
+          <seg>f_video</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>subcomponent</seg>
+        <seg>camera</seg>
+      </bo>
+      <position x="248.0" y="106.0"/>
+      <size width="340.0" height="59.0"/>
+    </element>
+    <element uuid="ecf03c0c-91a5-443b-b356-b667356f5958" manual="true">
+      <element uuid="3c6b5240-c342-44ef-b0d9-3071ad225b8f" manual="true" dockArea="left">
+        <bo>
+          <seg>feature</seg>
+          <seg>bus_access</seg>
+        </bo>
+        <position y="10.0"/>
+      </element>
+      <element uuid="15da46e6-dbb4-4346-be7d-427194e1d62e" manual="true" dockArea="left">
+        <bo>
+          <seg>feature</seg>
+          <seg>i2c_bus</seg>
+        </bo>
+        <position y="108.0"/>
+      </element>
+      <element uuid="0743cbd1-f5a0-4a66-81fd-45c1d5034136" manual="true" dockArea="left">
+        <bo>
+          <seg>feature</seg>
+          <seg>pwm_bus</seg>
+        </bo>
+        <position y="206.0"/>
+      </element>
+      <element uuid="cd6c686b-5415-4959-9cd1-6b84c2c2cd2e" manual="true" dockArea="left">
+        <bo>
+          <seg>feature</seg>
+          <seg>spi_bus</seg>
+        </bo>
+        <position y="157.0"/>
+      </element>
+      <element uuid="7ea76f6b-13f9-4594-97d5-07e082ad590a" manual="true" dockArea="left">
+        <bo>
+          <seg>feature</seg>
+          <seg>uart_bus</seg>
+        </bo>
+        <position y="255.0"/>
+      </element>
+      <element uuid="c4c222d8-dafd-4592-9b2e-05cb3f36bb33" manual="true" dockArea="left">
+        <bo>
+          <seg>feature</seg>
+          <seg>usb_bus</seg>
+        </bo>
+        <position y="59.0"/>
+      </element>
+      <bo>
+        <seg>subcomponent</seg>
+        <seg>cpu</seg>
+      </bo>
+      <position x="1075.0" y="37.0"/>
+      <size width="257.0" height="304.0"/>
+    </element>
+    <element uuid="bb4a8043-523f-4f4d-9dfd-3da6d511f651" manual="true">
+      <bo>
+        <seg>subcomponent</seg>
+        <seg>i2c_bus</seg>
+      </bo>
+      <position x="123.0" y="877.0"/>
+      <size width="105.0" height="35.0"/>
+    </element>
+    <element uuid="3d0e7855-eb69-4f66-9797-671516dfc69e" manual="true">
+      <element uuid="37142de5-6f3b-44bd-8152-2e7a69c15513" manual="true" dockArea="right">
+        <bo>
+          <seg>feature</seg>
+          <seg>dof6</seg>
+        </bo>
+        <position x="159.0" y="10.0"/>
+      </element>
+      <element uuid="b81821a2-ffb8-406e-ac41-e38c9af60f65" manual="true" dockArea="left">
+        <bo>
+          <seg>feature</seg>
+          <seg>i2c_bus</seg>
+        </bo>
+        <position y="10.0"/>
+      </element>
+      <element uuid="6d3ca903-a2ad-4a24-9070-9c4de05709c5" manual="true">
+        <bo>
+          <seg>flow_specification</seg>
+          <seg>f_imu</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>subcomponent</seg>
+        <seg>imu</seg>
+      </bo>
+      <position x="315.0" y="859.0"/>
+      <size width="207.0" height="59.0"/>
+    </element>
+    <element uuid="b7768126-1f88-4612-8ef3-6d85959dc143" manual="true">
+      <bo>
+        <seg>subcomponent</seg>
+        <seg>mem_bus</seg>
+      </bo>
+      <position x="858.0" y="50.0"/>
+      <size width="117.0" height="35.0"/>
+    </element>
+    <element uuid="531ce47c-b321-49e9-9fa3-1ffe47ad7eee" manual="true">
+      <bo>
+        <seg>subcomponent</seg>
+        <seg>pwm_bus</seg>
+      </bo>
+      <position x="859.0" y="241.0"/>
+      <size width="116.0" height="50.0"/>
+    </element>
+    <element uuid="a92169d8-8658-4860-bad8-8e5a4e1e304a" manual="true">
+      <bo>
+        <seg>subcomponent</seg>
+        <seg>ram</seg>
+      </bo>
+      <position x="12.0" y="37.0"/>
+      <size width="83.0" height="35.0"/>
+    </element>
+    <element uuid="8b32634e-156d-473a-921d-a7e91f32a580" manual="true">
+      <element uuid="13b0236c-0070-4bc1-995f-da77039dd7f0" manual="true" dockArea="left">
+        <bo>
+          <seg>feature</seg>
+          <seg>sd_card_serial_wire</seg>
+        </bo>
+        <position y="10.0"/>
+      </element>
+      <element uuid="cb76cb74-f3bf-497c-8069-3e6294a44d48" manual="true" dockArea="left">
+        <bo>
+          <seg>feature</seg>
+          <seg>store_data_in</seg>
+        </bo>
+        <position y="59.0"/>
+      </element>
+      <element uuid="dfc3eb6a-b3ce-4df0-b308-baf7304cd33c" manual="true">
+        <bo>
+          <seg>flow_specification</seg>
+          <seg>f_save</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>subcomponent</seg>
+        <seg>sd_card</seg>
+      </bo>
+      <position x="1075.0" y="361.0"/>
+      <size width="397.0" height="108.0"/>
+    </element>
+    <element uuid="3b7f872f-fdbc-4f01-a502-da8938b65c21" manual="true">
+      <element uuid="99ad0a2f-b1a4-4934-932a-cd6b10a993be" manual="true" dockArea="left">
+        <bo>
+          <seg>feature</seg>
+          <seg>pwm_bus</seg>
+        </bo>
+        <position y="10.0"/>
+      </element>
+      <element uuid="1d6b76d7-cc36-41c9-8bd8-c6ea9a4a8f2c" manual="true" dockArea="left">
+        <bo>
+          <seg>feature</seg>
+          <seg>pwm_serv</seg>
+        </bo>
+        <position y="59.0"/>
+      </element>
+      <element uuid="ca09df71-cb39-4b1a-8221-96a7453e9b24" manual="true">
+        <bo>
+          <seg>flow_specification</seg>
+          <seg>f0</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>subcomponent</seg>
+        <seg>servo_pitch</seg>
+      </bo>
+      <position x="1075.0" y="745.0"/>
+      <size width="289.0" height="108.0"/>
+    </element>
+    <element uuid="28f9507f-851f-45e6-a00a-76079e4ef14a" manual="true">
+      <element uuid="5c97f679-2788-4409-8bf8-f8c9e1078c34" manual="true" dockArea="left">
+        <bo>
+          <seg>feature</seg>
+          <seg>pwm_bus</seg>
+        </bo>
+        <position y="10.0"/>
+      </element>
+      <element uuid="032f4f77-f17c-489f-8ffc-c97b96dba044" manual="true" dockArea="left">
+        <bo>
+          <seg>feature</seg>
+          <seg>pwm_serv</seg>
+        </bo>
+        <position y="59.0"/>
+      </element>
+      <element uuid="5c091288-dc87-424c-b6ad-36a767938944" manual="true">
+        <bo>
+          <seg>flow_specification</seg>
+          <seg>f0</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>subcomponent</seg>
+        <seg>servo_roll</seg>
+      </bo>
+      <position x="1075.0" y="489.0"/>
+      <size width="279.0" height="108.0"/>
+    </element>
+    <element uuid="8eee1b66-c641-43a5-a027-f50375fac4ae" manual="true">
+      <element uuid="d0f07821-7390-4c9d-9558-ec53a993b070" manual="true" dockArea="left">
+        <bo>
+          <seg>feature</seg>
+          <seg>pwm_bus</seg>
+        </bo>
+        <position y="10.0"/>
+      </element>
+      <element uuid="59536f6f-a06d-4340-98aa-f0ed6237eb20" manual="true" dockArea="left">
+        <bo>
+          <seg>feature</seg>
+          <seg>pwm_serv</seg>
+        </bo>
+        <position y="59.0"/>
+      </element>
+      <element uuid="8b593b5d-d829-44d1-9744-f1269cc84cce" manual="true">
+        <bo>
+          <seg>flow_specification</seg>
+          <seg>f0</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>subcomponent</seg>
+        <seg>servo_yaw</seg>
+      </bo>
+      <position x="1075.0" y="617.0"/>
+      <size width="284.0" height="108.0"/>
+    </element>
+    <element uuid="85ec119f-33d5-4f37-a9e6-91e15c8b8e09" manual="true">
+      <bo>
+        <seg>subcomponent</seg>
+        <seg>spi_bus</seg>
+      </bo>
+      <position x="870.0" y="186.0"/>
+      <size width="105.0" height="35.0"/>
+    </element>
+    <element uuid="93f995c3-e2ed-4e5f-8ccf-d875c1b0fc31" manual="true">
+      <element uuid="e4adb64c-b61a-474c-a42a-a8a981ba5a38" manual="true" dockArea="left">
+        <bo>
+          <seg>feature</seg>
+          <seg>attitude_in</seg>
+        </bo>
+        <position y="222.0"/>
+      </element>
+      <element uuid="f8e94dbc-01ee-4452-a2db-6abc26470c52" manual="true" dockArea="right">
+        <bo>
+          <seg>feature</seg>
+          <seg>cam_low_res_out</seg>
+        </bo>
+        <position x="246.0" y="255.0"/>
+      </element>
+      <element uuid="10a143fe-5221-4ea2-88f8-e2c5939e699d" manual="true" dockArea="left">
+        <bo>
+          <seg>feature</seg>
+          <seg>camera_stream_in</seg>
+        </bo>
+        <position y="92.0"/>
+      </element>
+      <element uuid="6337ffe9-950b-4ee6-b075-e8790a498b49" manual="true" dockArea="right">
+        <bo>
+          <seg>feature</seg>
+          <seg>pwm_serv_pitch_out</seg>
+        </bo>
+        <position x="222.0" y="157.0"/>
+      </element>
+      <element uuid="6a84b635-5fb4-4848-9794-cc28be9a4df8" manual="true" dockArea="right">
+        <bo>
+          <seg>feature</seg>
+          <seg>pwm_serv_roll_out</seg>
+        </bo>
+        <position x="231.0" y="59.0"/>
+      </element>
+      <element uuid="ce4466c0-2698-4796-9ef8-cd712497177f" manual="true" dockArea="right">
+        <bo>
+          <seg>feature</seg>
+          <seg>pwm_serv_yaw_out</seg>
+        </bo>
+        <position x="230.0" y="108.0"/>
+      </element>
+      <element uuid="a0089373-9724-4ff6-8bb6-79c00bb39c2f" manual="true" dockArea="right">
+        <bo>
+          <seg>feature</seg>
+          <seg>radio_controller_in</seg>
+        </bo>
+        <position x="237.0" y="206.0"/>
+      </element>
+      <element uuid="1cc38db9-d3c5-454c-8e30-64e00ae3443c" manual="true" dockArea="right">
+        <bo>
+          <seg>feature</seg>
+          <seg>store_data_out</seg>
+        </bo>
+        <position x="262.0" y="10.0"/>
+      </element>
+      <element uuid="d6f388aa-6202-4567-9602-4d3764a0d621" manual="true" dockArea="right">
+        <bo>
+          <seg>feature</seg>
+          <seg>sys_status_out</seg>
+        </bo>
+        <position x="261.0" y="304.0"/>
+      </element>
+      <element uuid="c30316b7-8915-4f1b-ab67-92a31551829e" manual="true">
+        <bo>
+          <seg>flow_specification</seg>
+          <seg>f_sw_cam</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>subcomponent</seg>
+        <seg>sw</seg>
+      </bo>
+      <position x="608.0" y="647.0"/>
+      <size width="367.0" height="353.0"/>
+    </element>
+    <element uuid="2596190a-1ba6-4b64-80d8-518d10b4d09a" manual="true">
+      <bo>
+        <seg>subcomponent</seg>
+        <seg>uart_bus</seg>
+      </bo>
+      <position x="864.0" y="311.0"/>
+      <size width="111.0" height="35.0"/>
+    </element>
+    <element uuid="d2b74536-28f5-4a10-9c38-af95fbf4f95a" manual="true">
+      <element uuid="3d3ae712-48a0-4e86-a758-93697222b70e" manual="true" dockArea="left">
+        <bo>
+          <seg>feature</seg>
+          <seg>cam_low_res</seg>
+        </bo>
+        <position y="108.0"/>
+      </element>
+      <element uuid="4f753746-1a23-4fce-ac13-3818cd2fa6d6" manual="true" dockArea="left">
+        <bo>
+          <seg>feature</seg>
+          <seg>radio_controller</seg>
+        </bo>
+        <position y="59.0"/>
+      </element>
+      <element uuid="d123a545-bccb-4e99-b524-3fdf39b30cb7" manual="true" dockArea="left">
+        <bo>
+          <seg>feature</seg>
+          <seg>sys_status</seg>
+        </bo>
+        <position y="157.0"/>
+      </element>
+      <element uuid="86d82d4b-4da6-4b3e-814e-2e03330febf4" manual="true" dockArea="left">
+        <bo>
+          <seg>feature</seg>
+          <seg>uav_serial_wire</seg>
+        </bo>
+        <position y="10.0"/>
+      </element>
+      <element uuid="44efc823-f07e-450a-9b99-8c0327ff8019" manual="true">
+        <bo>
+          <seg>flow_specification</seg>
+          <seg>f1_radio</seg>
+        </bo>
+      </element>
+      <element uuid="d19a609d-fc26-46f1-b38d-3f81266c1664" manual="true">
+        <bo>
+          <seg>flow_specification</seg>
+          <seg>f2_cam</seg>
+        </bo>
+      </element>
+      <element uuid="45cc5133-11a2-4e84-81c2-f8b0adfe7869" manual="true">
+        <bo>
+          <seg>flow_specification</seg>
+          <seg>f3_sys_status</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>subcomponent</seg>
+        <seg>uav</seg>
+      </bo>
+      <position x="1075.0" y="873.0"/>
+      <size width="310.0" height="206.0"/>
+    </element>
+    <element uuid="25494718-ea96-456a-b422-4a242707ebcf" manual="true">
+      <bo>
+        <seg>subcomponent</seg>
+        <seg>usb_cam</seg>
+      </bo>
+      <position x="115.0" y="124.0"/>
+      <size width="113.0" height="35.0"/>
+    </element>
+    <bo>
+      <seg>classifier</seg>
+      <seg>uavcam.i</seg>
+    </bo>
+    <position x="12.0" y="12.0"/>
+    <size width="1484.0" height="1091.0"/>
+  </element>
+  <config type="structure" connectionPrimaryLabelsVisible="false">
+    <enabledAadlProperties/>
+    <context>
+      <seg>classifier</seg>
+      <seg>uavcam_pkg::uavcam.i</seg>
+    </context>
+  </config>
+</diagram:Diagram>

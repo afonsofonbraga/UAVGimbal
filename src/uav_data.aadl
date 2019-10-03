@@ -1,4 +1,4 @@
-package uavcam::tipo_de_dados
+package uav_data
 public
 	
 with base_types;
@@ -8,7 +8,7 @@ with data_model;
 -- PWM_Rate --
 --------------
 
-	  data PWM_Rate extends base_types::Unsigned_8
+	  data PWM_Rate 
 	  end PWM_Rate;
 	  
 	  data implementation PWM_Rate.impl
@@ -19,9 +19,9 @@ with data_model;
 	  
 	  data implementation PWM_Rate_Group.impl
 	  	subcomponents
-	  	roll: data uavcam::tipo_de_dados::PWM_Rate;
-	  	pitch: data uavcam::tipo_de_dados::PWM_Rate;
-	  	yaw: data uavcam::tipo_de_dados::PWM_Rate;
+	  	roll: data uav_data::PWM_Rate;
+	  	pitch: data uav_data::PWM_Rate;
+	  	yaw: data uav_data::PWM_Rate;
 	  end PWM_Rate_Group.impl;
 
 --------------------
@@ -31,7 +31,7 @@ with data_model;
 	data Six_Axis
 		properties
 			data_size => 12 Bytes;
-	    	data_model::Data_Representation => Array;
+	    		data_model::Data_Representation => Array;
 	end Six_Axis;
 	
 	data implementation Six_Axis.impl
@@ -50,6 +50,8 @@ with data_model;
 ------------
 
 	data Camera_Frame
+		properties
+			data_size => 4096 Bytes;
 	end Camera_Frame;
 	
 	data implementation Camera_Frame.impl
@@ -76,12 +78,7 @@ with data_model;
 	    	data_model::Data_Representation => Array;
 	end Target_Position;
 	
-	data implementation Target_Position.impl
-		subcomponents
-		    X_Ref: data base_types::Integer_16;
-		    Y_Ref: data base_types::Integer_16;
-		    Z_Ref: data base_types::Integer_16;
-	
+	data implementation Target_Position.impl	
 	end Target_Position.impl;
   
 	data Camera_Low_Res
@@ -97,4 +94,7 @@ with data_model;
 	end System_Status.impl;
 
 
-end uavcam::tipo_de_dados;
+end uav_data;
+
+
+

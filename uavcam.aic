@@ -1,0 +1,12 @@
+<PROJECT>
+  <AADL path="src/threads_file.aadl" enabled="true" opened="true"/>
+  <AADL path="src/devices_hw.aadl" enabled="true" opened="true"/>
+  <AADL path="src/uav_data.aadl" enabled="true" opened="true"/>
+  <AADL path="src/buses/buses-usb.aadl" enabled="true" opened="false"/>
+  <AADL path="src/buses/buses_pwm.aadl" enabled="true" opened="false"/>
+  <AADL path="src/buses/buses-i2c.aadl" enabled="true" opened="false"/>
+  <AADL path="src/buses/buses-spi.aadl" enabled="true" opened="false"/>
+  <AADL path="src/buses/buses-uart.aadl" enabled="true" opened="false"/>
+  <AADL path="src/properties_set/bus_properties.aadl" enabled="true" opened="true"/>
+  <AADL path="src/uavcam.aadl" enabled="false" opened="true"/>
+</PROJECT>
