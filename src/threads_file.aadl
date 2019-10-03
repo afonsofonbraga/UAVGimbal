@@ -1,8 +1,8 @@
 package threads_file
 public
-	
+
 	with uav_data;
-	
+  
 	thread get_attitude
 		features
 			Attitude_IMU: in data port uav_data::Six_Axis.impl;
