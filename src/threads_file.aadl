@@ -1,41 +1,20 @@
-package uavcam::threads_file
+package threads_file
 public
-	
-	with uavcam;
-	with uavcam::tipo_de_dados;
-	with SEI;
-	with Timing_Properties;
-	
-	
-	thread get_radio_command	
-		features
-			Target_Position_in: in data port uavcam::tipo_de_dados::Target_Position.impl;
-			Target_Position_Out: out data port uavcam::tipo_de_dados::Target_Position.impl;
-		properties
-		    Dispatch_protocol => periodic;
-		    period => 200 ms; -- 250ms utilizar cheddar::
-		    compute_execution_time => 2 ms .. 2 ms; -- 25ms
-		    deadline => 200 ms;
-		    priority => 1;
-		    POSIX_Scheduling_Policy => SCHED_FIFO;	
-	end get_radio_command;
-	
-	thread implementation get_radio_command.impl	
-	end get_radio_command.impl;
-	
-	
+
+	with uav_data;
+  
 	thread get_attitude
 		features
-			Attitude_IMU: in data port uavcam::tipo_de_dados::Six_Axis.impl;
-			Radio_Command_in: in data port uavcam::tipo_de_dados::Target_Position.impl;
-			Move_Servos_Out: out data port uavcam::tipo_de_dados::PWM_Rate_Group.impl;
+			Attitude_IMU: in data port uav_data::Six_Axis.impl;
+			Radio_Command_in: in data port uav_data::Target_Position.impl;
+			Move_Servos_Out: out data port uav_data::PWM_Rate_Group.impl;
+			health: out data port;
 		properties
 		    Dispatch_protocol => periodic;
-		    period => 200 ms; -- 250ms
-		    compute_execution_time => 2 ms .. 2 ms; -- 25ms
-		    deadline => 200 ms;
-		    priority => 2;
-		    POSIX_Scheduling_Policy => SCHED_FIFO;	
+		    period => 40 ms; 
+		    compute_execution_time => 2 ms .. 2 ms; 
+		    deadline => 10 ms;
+		    priority => 4;
 	end get_attitude;
 	
 	thread implementation get_attitude.impl	
@@ -43,43 +22,36 @@ public
 	
 	thread control_servos
 		features
-			Move_Servos_In: in data port uavcam::tipo_de_dados::PWM_Rate_Group.impl;
-			Move_Roll_Out: out data port uavcam::tipo_de_dados::PWM_Rate.impl; 
-			Move_Pitch_Out: out data port uavcam::tipo_de_dados::PWM_Rate.impl; 
-			Move_Yaw_Out: out data port uavcam::tipo_de_dados::PWM_Rate.impl; 
+			Move_Servos_In: in data port uav_data::PWM_Rate_Group.impl;
+			Move_Roll_Out: out data port uav_data::PWM_Rate.impl; 
+			Move_Pitch_Out: out data port uav_data::PWM_Rate.impl; 
+			Move_Yaw_Out: out data port uav_data::PWM_Rate.impl; 
+			health: out data port;
 		properties
 			Dispatch_protocol => periodic;
 		    period => 100 ms;
-		    compute_execution_time => 2 ms .. 2 ms;
+		    compute_execution_time => 4 ms .. 4 ms;
 		    deadline => 100 ms;
-		    priority => 3;
-		    POSIX_Scheduling_Policy => SCHED_FIFO;	
+		    priority => 3;	
 	end control_servos;	
 	
 	thread implementation control_servos.impl	
 	end control_servos.impl;
 	
 	thread process_video
-	  features
-	    video_from_camera: in data port uavcam::tipo_de_dados::Camera_Frame.impl;	    
-	    video_to_sd_card: out data port uavcam::tipo_de_dados::Store_Data.impl;
-	    video_to_uav: out data port uavcam::tipo_de_dados::Camera_Low_Res.impl;
-	    
+		features
+	    	video_from_camera: in data port uav_data::Camera_Frame.impl;	    
+	    	video_to_sd_card: out data port uav_data::Store_Data.impl;
+	    	video_to_uav: out data port uav_data::Camera_Low_Res.impl;
+			health: out data port;
+		flows
+			video_flow: flow path video_from_camera -> video_to_sd_card;
 	  properties
-	    Dispatch_protocol => periodic;
-	      --period => 1000 ms;
-	      --compute_execution_time => 2 ms .. 2 ms; -- 25ms
-	      deadline => 1000 ms; -- 250ms;
-	      priority => 4;
-	      POSIX_Scheduling_Policy => SCHED_FIFO;
-	      
-	      	sei::mipsbudget   => 25.0 MIPS;
-			--Dispatch_Protocol => Periodic;
+	  		Dispatch_protocol => periodic;
+	      	deadline => 1000 ms; 
+	      	priority => 2;
 			Period            => 50ms;
-			compute_execution_time => 10 ms .. 40 ms;
-			reference_processor => classifier (uavcam::MainProcessor);
-			sei::instructionsperdispatch => 1.24 kipd .. 1.25 mipd; 
-	      
+			compute_execution_time => 10 ms .. 20 ms;	      
 	end process_video;
 	
 	thread implementation process_video.impl	
@@ -87,17 +59,24 @@ public
 	
 	thread health_mgr	
 		features
-			status_to_uav: out data port uavcam::tipo_de_dados::System_Status.impl;	
+			status_to_uav: out data port uav_data::System_Status.impl;	
+			attitude: in data port;
+			video: in data port;
+			servos: in data port;
 		properties
 	    	Dispatch_protocol => periodic;
 	      	period => 1000 ms;
-		    compute_execution_time => 2 ms .. 2 ms; -- 25ms
-		    deadline => 1000 ms; -- 250ms;
-		    priority => 5;
-		    POSIX_Scheduling_Policy => SCHED_FIFO;
+		    compute_execution_time => 2 ms .. 2 ms; 
+		    deadline => 1000 ms; 
+		    priority => 1;
 	end health_mgr;
 	
 	thread implementation health_mgr.impl			
 	end health_mgr.impl;
-	
-end uavcam::threads_file;
+
+
+end threads_file;
+
+
+
+
