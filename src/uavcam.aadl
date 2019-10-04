@@ -70,7 +70,12 @@ system implementation uavcam.i
 		bus_sd_card: bus access spi_bus <-> sd_card.SD_card_Serial_Wire;
 		
 	flows
-		f_sys_cam: end to end flow camera.f_video -> bus_cam_conn -> sw.f_sw_cam -> sd_card_conn -> sd_card.f_save;
+		f_sys_cam_sdcard: end to end flow camera.f_video -> bus_cam_conn -> sw.f_sw_cam_sdcard -> sd_card_conn -> sd_card.f_save;
+		f_sys_cam_uav: end to end flow camera.f_video -> bus_cam_conn -> sw.f_sw_cam_uav -> uav_cam_conn -> uav.f2_cam;
+		f_sys_att_1: end to end flow imu.f_imu -> bus_imu_conn -> sw.f_sw_att_1 -> bus_pwm_conn1-> servo_roll.f0;
+		f_sys_att_2: end to end flow imu.f_imu -> bus_imu_conn -> sw.f_sw_att_2 -> bus_pwm_conn2-> servo_pitch.f0;
+		f_sys_att_3: end to end flow imu.f_imu -> bus_imu_conn -> sw.f_sw_att_3 -> bus_pwm_conn3-> servo_yaw.f0;
+		
 	properties
 		Actual_Processor_Binding => (REFERENCE(cpu)) APPLIES TO sw;
 		Actual_Memory_Binding => (REFERENCE(ram)) APPLIES TO sw;
@@ -114,7 +119,14 @@ process sw
 		cam_low_res_out: out data port uav_data::Camera_Low_Res.impl;
 		sys_status_out: out data port uav_data::System_Status.impl;	
 	flows
-		f_sw_cam: flow path camera_stream_in -> store_data_out;
+		f_sw_cam_sdcard: flow path camera_stream_in -> store_data_out;
+		f_sw_cam_uav: flow path camera_stream_in -> cam_low_res_out;
+		f_sw_att_1: flow path Attitude_in -> PWM_Serv_Roll_out;
+		f_sw_att_2: flow path Attitude_in -> PWM_Serv_Pitch_out;
+		f_sw_att_3: flow path Attitude_in -> PWM_Serv_Yaw_out;
+		f_sw_radio_1: flow path radio_controller_in -> PWM_Serv_Roll_out;
+		f_sw_radio_2: flow path radio_controller_in -> PWM_Serv_Pitch_out;
+		f_sw_radio_3: flow path radio_controller_in -> PWM_Serv_Yaw_out;
 end sw;
 
 process implementation sw.i
@@ -143,7 +155,20 @@ process implementation sw.i
 		yaw_conn: port thread_control_servos.Move_Yaw_Out -> PWM_Serv_Yaw_out;
 	
 	flows
-		f_sw_cam: flow path camera_stream_in -> cam_stream_conn -> thread_process_video.video_flow -> store_video_conn -> store_data_out;
+		f_sw_cam_sdcard: flow path camera_stream_in -> cam_stream_conn -> thread_process_video.video_save_flow -> store_video_conn -> store_data_out;
+		f_sw_cam_uav: flow path camera_stream_in -> cam_stream_conn -> thread_process_video.video_tx_flow -> send_video_conn -> cam_low_res_out;
+		f_sw_att_1: flow path Attitude_in -> attitude_in_conn -> thread_get_attitude.att_flow ->  movement_conn -> 
+								thread_control_servos.roll_out_flow -> roll_conn-> PWM_Serv_Roll_out;			
+		f_sw_att_2: flow path Attitude_in -> attitude_in_conn -> thread_get_attitude.att_flow ->  movement_conn -> 
+								thread_control_servos.pitch_out_flow -> pitch_conn -> PWM_Serv_Pitch_out;											
+		f_sw_att_3: flow path Attitude_in -> attitude_in_conn -> thread_get_attitude.att_flow ->  movement_conn -> 
+								thread_control_servos.yaw_out_flow -> yaw_conn -> PWM_Serv_Yaw_out;
+		f_sw_radio_1: flow path radio_controller_in -> command_conn -> thread_get_attitude.radio_flow ->  movement_conn -> 
+								thread_control_servos.roll_out_flow -> roll_conn -> PWM_Serv_Roll_out;	
+		f_sw_radio_2: flow path radio_controller_in -> command_conn -> thread_get_attitude.radio_flow ->  movement_conn -> 
+								thread_control_servos.pitch_out_flow -> pitch_conn -> PWM_Serv_Pitch_out;		
+		f_sw_radio_3: flow path radio_controller_in -> command_conn -> thread_get_attitude.radio_flow ->  movement_conn -> 
+								thread_control_servos.yaw_out_flow -> yaw_conn -> PWM_Serv_Yaw_out;
 end sw.i;
 
 end uavcam_pkg;
