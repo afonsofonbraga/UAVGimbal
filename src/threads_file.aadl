@@ -9,12 +9,15 @@ public
 			Radio_Command_in: in data port uav_data::Target_Position.impl;
 			Move_Servos_Out: out data port uav_data::PWM_Rate_Group.impl;
 			health: out data port;
+		flows
+			att_flow: flow path Attitude_IMU -> Move_Servos_Out;
+			radio_flow: flow path Radio_Command_in -> Move_Servos_Out;
 		properties
-		    Dispatch_protocol => periodic;
-		    period => 40 ms; 
-		    compute_execution_time => 2 ms .. 2 ms; 
-		    deadline => 10 ms;
-		    priority => 4;
+		    	Dispatch_protocol => periodic;
+		    	period => 40 ms; 
+		    	compute_execution_time => 2 ms .. 4 ms; 
+		    	deadline => 40 ms;
+		    	priority => 4;
 	end get_attitude;
 	
 	thread implementation get_attitude.impl	
@@ -27,12 +30,16 @@ public
 			Move_Pitch_Out: out data port uav_data::PWM_Rate.impl; 
 			Move_Yaw_Out: out data port uav_data::PWM_Rate.impl; 
 			health: out data port;
+		flows
+			roll_out_flow: flow path Move_Servos_In -> Move_Roll_Out;
+			pitch_out_flow: flow path Move_Servos_In -> Move_Pitch_Out;
+			yaw_out_flow: flow path Move_Servos_In -> Move_Yaw_Out;
 		properties
 			Dispatch_protocol => periodic;
-		    period => 100 ms;
-		    compute_execution_time => 4 ms .. 4 ms;
-		    deadline => 100 ms;
-		    priority => 3;	
+		    	period => 100 ms;
+		    	compute_execution_time => 4 ms .. 4 ms;
+		    	deadline => 100 ms;
+		    	priority => 3;	
 	end control_servos;	
 	
 	thread implementation control_servos.impl	
@@ -40,18 +47,19 @@ public
 	
 	thread process_video
 		features
-	    	video_from_camera: in data port uav_data::Camera_Frame.impl;	    
-	    	video_to_sd_card: out data port uav_data::Store_Data.impl;
-	    	video_to_uav: out data port uav_data::Camera_Low_Res.impl;
+	    		video_from_camera: in data port uav_data::Camera_Frame.impl;	    
+	    		video_to_sd_card: out data port uav_data::Store_Data.impl;
+	    		video_to_uav: out data port uav_data::Camera_Low_Res.impl;
 			health: out data port;
 		flows
-			video_flow: flow path video_from_camera -> video_to_sd_card;
-	  properties
+			video_save_flow: flow path video_from_camera -> video_to_sd_card;
+			video_tx_flow: flow path video_from_camera -> video_to_uav;
+	  	properties
 	  		Dispatch_protocol => periodic;
-	      	deadline => 1000 ms; 
-	      	priority => 2;
-			Period            => 50ms;
-			compute_execution_time => 10 ms .. 20 ms;	      
+			period => 50 ms;
+			compute_execution_time => 10 ms .. 20 ms;	
+	      	deadline => 50 ms; 
+	      	priority => 2;			      
 	end process_video;
 	
 	thread implementation process_video.impl	
@@ -63,12 +71,16 @@ public
 			attitude: in data port;
 			video: in data port;
 			servos: in data port;
+		flows
+			att_status_flow: flow path attitude -> status_to_uav;
+			video_status_flow: flow path video -> status_to_uav;
+			servos_status_flow: flow path servos -> status_to_uav;
 		properties
-	    	Dispatch_protocol => periodic;
-	      	period => 1000 ms;
-		    compute_execution_time => 2 ms .. 2 ms; 
-		    deadline => 1000 ms; 
-		    priority => 1;
+	    		Dispatch_protocol => periodic;
+	      		period => 1000 ms;
+		    	compute_execution_time => 2 ms .. 2 ms; 
+		    	deadline => 1000 ms; 
+		    	priority => 1;
 	end health_mgr;
 	
 	thread implementation health_mgr.impl			
@@ -76,6 +88,7 @@ public
 
 
 end threads_file;
+
 
 
 

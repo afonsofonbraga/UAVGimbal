@@ -8,21 +8,24 @@ with data_model;
 -- PWM_Rate --
 --------------
 
-	  data PWM_Rate 
-	  end PWM_Rate;
+	data PWM_Rate 
+	end PWM_Rate;
 	  
-	  data implementation PWM_Rate.impl
-	  end PWM_Rate.impl;
+	data implementation PWM_Rate.impl
+	end PWM_Rate.impl;
 
-	  data PWM_Rate_Group
-	  end PWM_Rate_Group;
+	data PWM_Rate_Group
+		properties
+			data_size => 12 Bytes;
+	    	data_model::Data_Representation => Array;
+	end PWM_Rate_Group;
 	  
-	  data implementation PWM_Rate_Group.impl
+	data implementation PWM_Rate_Group.impl
 	  	subcomponents
 	  	roll: data uav_data::PWM_Rate;
 	  	pitch: data uav_data::PWM_Rate;
 	  	yaw: data uav_data::PWM_Rate;
-	  end PWM_Rate_Group.impl;
+	end PWM_Rate_Group.impl;
 
 --------------------
 -- IMU gyro + acc --
@@ -31,7 +34,7 @@ with data_model;
 	data Six_Axis
 		properties
 			data_size => 12 Bytes;
-	    		data_model::Data_Representation => Array;
+	    	data_model::Data_Representation => Array;
 	end Six_Axis;
 	
 	data implementation Six_Axis.impl
@@ -82,12 +85,16 @@ with data_model;
 	end Target_Position.impl;
   
 	data Camera_Low_Res
+		properties
+			data_size => 1024 Bytes;
 	end Camera_Low_Res;
 	
 	data implementation Camera_Low_Res.impl
 	end Camera_Low_Res.impl;
 	
 	data System_Status
+		properties
+			data_size => 3 Bytes;
 	end System_Status;
 	
 	data implementation System_Status.impl

@@ -1,0 +1,508 @@
+<?xml version="1.0" encoding="ASCII"?>
+<diagram:Diagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:diagram="http://osate.org/diagram" formatVersion="7">
+  <element uuid="07223e7b-9267-454e-a22b-f277dd5bb4ba" manual="true">
+    <element uuid="3ef3f900-05a8-4225-89ab-5dd057a0bf9e" manual="true">
+      <element uuid="00d4c3bb-48a5-4c05-abf3-282dd75909c5" manual="true">
+        <bo>
+          <seg>tag</seg>
+          <seg>unidirectional</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>connection</seg>
+        <seg>attitude_in_conn</seg>
+      </bo>
+    </element>
+    <element uuid="9f89533c-a672-4380-b03f-137177d39e56" manual="true">
+      <element uuid="58c2744c-a1c3-4177-be3c-c79929a36c27" manual="true">
+        <bo>
+          <seg>tag</seg>
+          <seg>unidirectional</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>connection</seg>
+        <seg>cam_stream_conn</seg>
+      </bo>
+    </element>
+    <element uuid="3933d0ae-d203-41b2-bb07-e7d748e84b30" manual="true">
+      <element uuid="bc2dd7fc-bb17-468f-bd9b-bee95672809f" manual="true">
+        <bo>
+          <seg>tag</seg>
+          <seg>unidirectional</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>connection</seg>
+        <seg>command_conn</seg>
+      </bo>
+    </element>
+    <element uuid="0f2e9f64-27da-47df-9429-2aa21fb48209" manual="true">
+      <element uuid="2abece56-795c-449b-8cd4-6d032a78b114" manual="true">
+        <bo>
+          <seg>tag</seg>
+          <seg>unidirectional</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>connection</seg>
+        <seg>get_attitude_status</seg>
+      </bo>
+    </element>
+    <element uuid="436c6bd0-101a-4c20-857a-bc9ad9f61b32" manual="true">
+      <element uuid="d520242a-cbf7-45a9-9af0-dcc4f875ef61" manual="true">
+        <bo>
+          <seg>tag</seg>
+          <seg>unidirectional</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>connection</seg>
+        <seg>get_servos_status</seg>
+      </bo>
+      <bendpoints>
+        <point x="1091.0" y="292.0"/>
+        <point x="1091.0" y="289.0"/>
+      </bendpoints>
+    </element>
+    <element uuid="c01d1d86-17f0-4763-9bd4-a528e73d8cb5" manual="true">
+      <element uuid="2f8bf40e-31cd-4fe9-ad2d-951865aec101" manual="true">
+        <bo>
+          <seg>tag</seg>
+          <seg>unidirectional</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>connection</seg>
+        <seg>get_video_status</seg>
+      </bo>
+      <bendpoints>
+        <point x="1091.0" y="188.0"/>
+        <point x="1091.0" y="191.0"/>
+      </bendpoints>
+    </element>
+    <element uuid="75d4bb81-13ff-41f0-abb8-f94bc0eb55a2" manual="true">
+      <element uuid="d87f5222-dc6a-4fe8-86e8-650d59bd25b7" manual="true">
+        <bo>
+          <seg>tag</seg>
+          <seg>unidirectional</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>connection</seg>
+        <seg>movement_conn</seg>
+      </bo>
+      <bendpoints>
+        <point x="607.0" y="289.0"/>
+        <point x="607.0" y="365.5"/>
+      </bendpoints>
+    </element>
+    <element uuid="9f11793b-ca38-476d-bebc-fa6c39a1e65d" manual="true">
+      <element uuid="fe0c405c-dd1d-484e-9197-fc507609b310" manual="true">
+        <bo>
+          <seg>tag</seg>
+          <seg>unidirectional</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>connection</seg>
+        <seg>pitch_conn</seg>
+      </bo>
+    </element>
+    <element uuid="11f4bdb6-bed8-46f0-abb0-d6c09bb021a2" manual="true">
+      <element uuid="c50459e0-6736-4081-80a3-cdee198419df" manual="true">
+        <bo>
+          <seg>tag</seg>
+          <seg>unidirectional</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>connection</seg>
+        <seg>roll_conn</seg>
+      </bo>
+    </element>
+    <element uuid="30fdc45b-efb8-479e-893f-b10e263a3dba" manual="true">
+      <element uuid="d0920f99-fa53-41c6-9b8d-1e594a54d38f" manual="true">
+        <bo>
+          <seg>tag</seg>
+          <seg>unidirectional</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>connection</seg>
+        <seg>send_status_conn</seg>
+      </bo>
+    </element>
+    <element uuid="6782d3f7-98ca-4762-a006-3f20c369bbd4" manual="true">
+      <element uuid="d1f9c756-8935-4282-ad40-a273a944f523" manual="true">
+        <bo>
+          <seg>tag</seg>
+          <seg>unidirectional</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>connection</seg>
+        <seg>send_video_conn</seg>
+      </bo>
+    </element>
+    <element uuid="bfb823c4-7356-42f6-9db1-e35c2101c4eb" manual="true">
+      <element uuid="5abd127b-2dd3-4d3e-8d53-28c882c4a3a6" manual="true">
+        <bo>
+          <seg>tag</seg>
+          <seg>unidirectional</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>connection</seg>
+        <seg>store_video_conn</seg>
+      </bo>
+    </element>
+    <element uuid="62f41588-45f2-4574-b8a0-f421e6a5488d" manual="true">
+      <element uuid="30f2062a-88ce-4ade-a40c-c96afd191c1a" manual="true">
+        <bo>
+          <seg>tag</seg>
+          <seg>unidirectional</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>connection</seg>
+        <seg>yaw_conn</seg>
+      </bo>
+    </element>
+    <element uuid="a84dcedd-8782-49bb-841a-6074be55c31c" manual="true" dockArea="left">
+      <bo>
+        <seg>feature</seg>
+        <seg>attitude_in</seg>
+      </bo>
+      <position y="197.0"/>
+    </element>
+    <element uuid="3dbf4ea5-b35c-4390-95ff-3c7a69c50071" manual="true" dockArea="right">
+      <bo>
+        <seg>feature</seg>
+        <seg>cam_low_res_out</seg>
+      </bo>
+      <position x="1495.0" y="47.0"/>
+    </element>
+    <element uuid="216a76fd-6d09-4b77-9a68-46d8235e3017" manual="true" dockArea="left">
+      <bo>
+        <seg>feature</seg>
+        <seg>camera_stream_in</seg>
+      </bo>
+      <position y="96.0"/>
+    </element>
+    <element uuid="62a439e0-2937-4134-b438-63ab8258581a" manual="true" dockArea="right">
+      <bo>
+        <seg>feature</seg>
+        <seg>pwm_serv_pitch_out</seg>
+      </bo>
+      <position x="1471.0" y="298.0"/>
+    </element>
+    <element uuid="f3ee1e1b-6c64-47e8-a1eb-cb96e86d4b4d" manual="true" dockArea="right">
+      <bo>
+        <seg>feature</seg>
+        <seg>pwm_serv_roll_out</seg>
+      </bo>
+      <position x="1480.0" y="347.0"/>
+    </element>
+    <element uuid="41e79139-37e1-4087-9350-59907e78b6b7" manual="true" dockArea="right">
+      <bo>
+        <seg>feature</seg>
+        <seg>pwm_serv_yaw_out</seg>
+      </bo>
+      <position x="1479.0" y="396.0"/>
+    </element>
+    <element uuid="18fa90fc-886d-4c2a-917a-49149c483e78" manual="true" dockArea="left">
+      <bo>
+        <seg>feature</seg>
+        <seg>radio_controller_in</seg>
+      </bo>
+      <position y="246.0"/>
+    </element>
+    <element uuid="bff9728e-33b5-478d-8df7-33ff9ae9f800" manual="true" dockArea="right">
+      <bo>
+        <seg>feature</seg>
+        <seg>store_data_out</seg>
+      </bo>
+      <position x="1511.0" y="96.0"/>
+    </element>
+    <element uuid="fd686a83-8d1e-4d04-bcb0-474551dd4997" manual="true" dockArea="right">
+      <bo>
+        <seg>feature</seg>
+        <seg>sys_status_out</seg>
+      </bo>
+      <position x="1510.0" y="197.0"/>
+    </element>
+    <element uuid="d9129d6f-921d-4189-bee2-378062257825" manual="true">
+      <bo>
+        <seg>flow_specification</seg>
+        <seg>f_sw_att_1</seg>
+      </bo>
+    </element>
+    <element uuid="8a0574ff-91c6-4778-8244-cdb2c28066f5" manual="true">
+      <bo>
+        <seg>flow_specification</seg>
+        <seg>f_sw_att_2</seg>
+      </bo>
+    </element>
+    <element uuid="6b1aa49e-4ec1-476a-9ffc-01b7c31a5b14" manual="true">
+      <bo>
+        <seg>flow_specification</seg>
+        <seg>f_sw_att_3</seg>
+      </bo>
+    </element>
+    <element uuid="32c5eb3d-091f-4917-972b-9d343bcfceb6" manual="true">
+      <bo>
+        <seg>flow_specification</seg>
+        <seg>f_sw_cam_sdcard</seg>
+      </bo>
+    </element>
+    <element uuid="e522a904-6942-4e48-a1c9-34b236d63ee3" manual="true">
+      <bo>
+        <seg>flow_specification</seg>
+        <seg>f_sw_cam_uav</seg>
+      </bo>
+    </element>
+    <element uuid="46f1c5ac-f06c-4a9e-a71f-465fada5a401" manual="true">
+      <bo>
+        <seg>flow_specification</seg>
+        <seg>f_sw_radio_1</seg>
+      </bo>
+    </element>
+    <element uuid="67952654-2e82-4e9d-a2f8-4b8edfb26edb" manual="true">
+      <bo>
+        <seg>flow_specification</seg>
+        <seg>f_sw_radio_2</seg>
+      </bo>
+    </element>
+    <element uuid="0efa5c07-c9b1-4008-9e57-008ec549d39d" manual="true">
+      <bo>
+        <seg>flow_specification</seg>
+        <seg>f_sw_radio_3</seg>
+      </bo>
+    </element>
+    <element uuid="53fdc819-a42f-486a-8fba-0ef5793a60af" manual="true">
+      <element uuid="dd18865e-1fc0-4af0-ae94-4547d19dff51" manual="true" dockArea="right">
+        <bo>
+          <seg>feature</seg>
+          <seg>health</seg>
+        </bo>
+        <position x="368.0" y="10.0"/>
+      </element>
+      <element uuid="6323ca53-1cbf-4bd6-a580-caa1da2e18b1" manual="true" dockArea="right">
+        <bo>
+          <seg>feature</seg>
+          <seg>move_pitch_out</seg>
+        </bo>
+        <position x="310.0" y="59.0"/>
+      </element>
+      <element uuid="6baf6de7-3c5c-455c-9631-d0f2779e5217" manual="true" dockArea="right">
+        <bo>
+          <seg>feature</seg>
+          <seg>move_roll_out</seg>
+        </bo>
+        <position x="318.0" y="108.0"/>
+      </element>
+      <element uuid="de1682fb-568a-4399-a1fe-0f371c788716" manual="true" dockArea="left">
+        <bo>
+          <seg>feature</seg>
+          <seg>move_servos_in</seg>
+        </bo>
+        <position y="84.0"/>
+      </element>
+      <element uuid="4727f46f-fd52-4b31-9fee-e6ae7715b389" manual="true" dockArea="right">
+        <bo>
+          <seg>feature</seg>
+          <seg>move_yaw_out</seg>
+        </bo>
+        <position x="316.0" y="157.0"/>
+      </element>
+      <element uuid="3ec1f91e-6761-4d6e-9aa0-a12b62e7d9ad" manual="true">
+        <bo>
+          <seg>flow_specification</seg>
+          <seg>pitch_out_flow</seg>
+        </bo>
+      </element>
+      <element uuid="c86b7323-1d1c-4f61-9fdb-1573554ee6ae" manual="true">
+        <bo>
+          <seg>flow_specification</seg>
+          <seg>roll_out_flow</seg>
+        </bo>
+      </element>
+      <element uuid="bead0cda-5a0a-4d85-8b28-b592c98b886b" manual="true">
+        <bo>
+          <seg>flow_specification</seg>
+          <seg>yaw_out_flow</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>subcomponent</seg>
+        <seg>thread_control_servos</seg>
+      </bo>
+      <position x="639.0" y="239.0"/>
+      <size width="421.0" height="206.0"/>
+    </element>
+    <element uuid="99e723cd-852a-482d-a453-443bee4471be" manual="true">
+      <element uuid="73ee469a-53f5-43ae-b07d-8055299c8b74" manual="true" dockArea="left">
+        <bo>
+          <seg>feature</seg>
+          <seg>attitude_imu</seg>
+        </bo>
+        <position y="10.0"/>
+      </element>
+      <element uuid="697b0bd5-f5c7-4a90-8685-2ea86fb99914" manual="true" dockArea="right">
+        <bo>
+          <seg>feature</seg>
+          <seg>health</seg>
+        </bo>
+        <position x="390.0" y="10.0"/>
+      </element>
+      <element uuid="331aa5cf-fb1a-42cd-a4a9-a5c705af85e7" manual="true" dockArea="right">
+        <bo>
+          <seg>feature</seg>
+          <seg>move_servos_out</seg>
+        </bo>
+        <position x="321.0" y="59.0"/>
+      </element>
+      <element uuid="8dc095ca-654f-438f-bcd8-dc54e0eb870b" manual="true" dockArea="left">
+        <bo>
+          <seg>feature</seg>
+          <seg>radio_command_in</seg>
+        </bo>
+        <position y="59.0"/>
+      </element>
+      <element uuid="877fd0b5-814d-4673-9acc-325197bc685d" manual="true">
+        <bo>
+          <seg>flow_specification</seg>
+          <seg>att_flow</seg>
+        </bo>
+      </element>
+      <element uuid="3b43b117-e56f-4e29-bf34-aa70e93c7da9" manual="true">
+        <bo>
+          <seg>flow_specification</seg>
+          <seg>radio_flow</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>subcomponent</seg>
+        <seg>thread_get_attitude</seg>
+      </bo>
+      <position x="142.0" y="187.0"/>
+      <size width="443.0" height="108.0"/>
+    </element>
+    <element uuid="af588cb7-2c90-4f5d-9289-9c0fe571b23d" manual="true">
+      <element uuid="e9add001-0a1d-4e96-84a0-d5239aa9374b" manual="true" dockArea="left">
+        <bo>
+          <seg>feature</seg>
+          <seg>attitude</seg>
+        </bo>
+        <position y="59.0"/>
+      </element>
+      <element uuid="1a33fb7e-a700-49cb-8ea0-ca6fb2c38f26" manual="true" dockArea="left">
+        <bo>
+          <seg>feature</seg>
+          <seg>servos</seg>
+        </bo>
+        <position y="108.0"/>
+      </element>
+      <element uuid="87bf6488-1564-4966-ac42-221abc36066f" manual="true" dockArea="right">
+        <bo>
+          <seg>feature</seg>
+          <seg>status_to_uav</seg>
+        </bo>
+        <position x="271.0" y="59.0"/>
+      </element>
+      <element uuid="48c4c8da-f1d2-413e-b7e2-ae3b4bfb7450" manual="true" dockArea="left">
+        <bo>
+          <seg>feature</seg>
+          <seg>video</seg>
+        </bo>
+        <position y="10.0"/>
+      </element>
+      <element uuid="16379dac-be45-4b9a-a0ad-4915c307240e" manual="true">
+        <bo>
+          <seg>flow_specification</seg>
+          <seg>att_status_flow</seg>
+        </bo>
+      </element>
+      <element uuid="3d901e09-ee14-4fec-a05f-8b1b907dba09" manual="true">
+        <bo>
+          <seg>flow_specification</seg>
+          <seg>servos_status_flow</seg>
+        </bo>
+      </element>
+      <element uuid="32578ba0-b46e-4cb5-999c-026c8f55f231" manual="true">
+        <bo>
+          <seg>flow_specification</seg>
+          <seg>video_status_flow</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>subcomponent</seg>
+        <seg>thread_health_mgr</seg>
+      </bo>
+      <position x="1089.0" y="138.0"/>
+      <size width="370.0" height="157.0"/>
+    </element>
+    <element uuid="c328d8ad-39bc-4ea6-becf-f52b52c59b11" manual="true">
+      <element uuid="e8bed706-7ed9-48b5-a68e-19289f89e08a" manual="true" dockArea="right">
+        <bo>
+          <seg>feature</seg>
+          <seg>health</seg>
+        </bo>
+        <position x="411.0" y="108.0"/>
+      </element>
+      <element uuid="ac923680-48a0-4ec7-a8b3-3b15d242c039" manual="true" dockArea="left">
+        <bo>
+          <seg>feature</seg>
+          <seg>video_from_camera</seg>
+        </bo>
+        <position y="59.0"/>
+      </element>
+      <element uuid="2962d51f-1bf5-4d91-ba70-047e5d350db5" manual="true" dockArea="right">
+        <bo>
+          <seg>feature</seg>
+          <seg>video_to_sd_card</seg>
+        </bo>
+        <position x="343.0" y="59.0"/>
+      </element>
+      <element uuid="6c4b3b91-0033-418d-9bd7-f41dfacb346a" manual="true" dockArea="right">
+        <bo>
+          <seg>feature</seg>
+          <seg>video_to_uav</seg>
+        </bo>
+        <position x="371.0" y="10.0"/>
+      </element>
+      <element uuid="c95098d6-435e-499d-91c4-7c402077dd32" manual="true">
+        <bo>
+          <seg>flow_specification</seg>
+          <seg>video_save_flow</seg>
+        </bo>
+      </element>
+      <element uuid="bae41058-a141-434e-81c6-54d1c6053e29" manual="true">
+        <bo>
+          <seg>flow_specification</seg>
+          <seg>video_tx_flow</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>subcomponent</seg>
+        <seg>thread_process_video</seg>
+      </bo>
+      <position x="605.0" y="37.0"/>
+      <size width="464.0" height="157.0"/>
+    </element>
+    <bo>
+      <seg>classifier</seg>
+      <seg>sw.i</seg>
+    </bo>
+    <position x="12.0" y="12.0"/>
+    <size width="1616.0" height="457.0"/>
+  </element>
+  <config type="structure" connectionPrimaryLabelsVisible="false">
+    <enabledAadlProperties/>
+    <context>
+      <seg>classifier</seg>
+      <seg>uavcam_pkg::sw.i</seg>
+    </context>
+  </config>
+</diagram:Diagram>
